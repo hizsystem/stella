@@ -11,7 +11,8 @@
       font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
       background: #f5f5f5;
       color: #1a1a1a;
-      line-height: 1.7;
+      font-size: 15px;
+      line-height: 1.8;
       overflow-x: hidden;
     }
 
@@ -85,15 +86,15 @@
 
     /* ── TABLE ── */
     table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0 20px; }
-    th { background: #f5f5f5; padding: 11px 14px; text-align: left; font-weight: 700; border: 1px solid #e0e0e0; font-size: 13px; }
-    td { padding: 11px 14px; border: 1px solid #e0e0e0; vertical-align: top; }
-    td:first-child { color: #555; font-weight: 600; width: 28%; }
+    th { background: #f5f5f5; padding: 13px 16px; text-align: left; font-weight: 700; border: 1px solid #e0e0e0; font-size: 14px; }
+    td { padding: 13px 16px; border: 1px solid #e0e0e0; vertical-align: top; font-size: 15px; }
+    td:first-child { color: #555; font-weight: 600; width: 26%; font-size: 14px; }
 
     /* ── CALLOUT ── */
     .callout {
       background: #f9f9f9; border-left: 4px solid #000;
       padding: 20px 24px; border-radius: 0 10px 10px 0;
-      font-size: 14px; line-height: 1.9; color: #222; margin-bottom: 20px;
+      font-size: 15px; line-height: 1.9; color: #222; margin-bottom: 20px;
     }
     .callout strong { color: #000; }
 
@@ -111,7 +112,7 @@
       border-radius: 4px; margin-bottom: 10px;
     }
     .channel-card .channel-tag.orange { background: #444; }
-    .channel-card p { font-size: 13px; color: #555; line-height: 1.7; }
+    .channel-card p { font-size: 14px; color: #555; line-height: 1.7; }
 
     /* ── AI TOOL CARDS ── */
     .ai-grid {
@@ -133,10 +134,10 @@
       padding: 2px 8px; border-radius: 4px;
     }
     .ai-card h4 {
-      font-size: 15px; font-weight: 800;
+      font-size: 16px; font-weight: 800;
       margin-bottom: 8px; color: #1a1a1a; padding-right: 64px;
     }
-    .ai-card p { font-size: 13px; color: #555; line-height: 1.7; }
+    .ai-card p { font-size: 14px; color: #555; line-height: 1.7; }
     .ai-card a {
       display: inline-block; margin-top: 10px;
       font-size: 12px; color: #444; text-decoration: none;
@@ -166,7 +167,7 @@
       color: #333; margin-bottom: 14px; line-height: 1.8;
       border-radius: 0 8px 8px 0;
     }
-    .lesson-card p { font-size: 13px; color: #555; line-height: 1.8; }
+    .lesson-card p { font-size: 14px; color: #555; line-height: 1.8; }
 
     /* ── FOOTER ── */
     .footer {
@@ -252,8 +253,8 @@
     </div>
 
     <div class="callout">
-      <strong>사용 툴</strong>&nbsp; Claude Code (Anthropic) &nbsp;+&nbsp; ChatGPT (OpenAI)<br/>
-      콘텐츠 제작 · 데이터 분석 · 전략 수립 · 크리에이티브까지 — 운영 전반에 AI 활용
+      <strong>사용 툴</strong>&nbsp; Claude Code &nbsp;+&nbsp; ChatGPT<br/>
+      콘텐츠 제작 · 데이터 분석 · 전략 수립 · 크리에이티브 — 전 영역 AI 활용
     </div>
 
     <div class="ai-grid">
@@ -267,7 +268,7 @@
         <div class="num">2</div>
         <div class="ai-tag">Claude Code</div>
         <h4>성과 분석 · 보고서 자동 생성</h4>
-        <p>YouTube Studio 스크린샷 → Claude가 수치 추출·분석 → HTML 보고서 완성</p>
+        <p>스크린샷 공유 → 수치 분석 → 보고서 완성</p>
         <a href="https://hizsystem.github.io/stella/thanks-curator/" target="_blank">보고서 바로가기 →</a>
       </div>
       <div class="ai-card">
@@ -291,11 +292,11 @@
       </tr>
       <tr>
         <td>효율화 성과</td>
-        <td class="eff-good">설명문·타임스탬프 편당 수작업 → 자동 생성<br/>보고서 반나절 → 30분 · 로고 제작 비용 0원 · 전략 수립 시간 단축</td>
+        <td class="eff-good">설명문·타임스탬프 자동 생성 · 보고서 반나절 → 30분 · 로고 비용 0원</td>
       </tr>
       <tr>
         <td>현재 한계</td>
-        <td class="eff-bad">YouTube API 미연동 — 수치 직접 입력<br/>AI 제안 전략의 실효성은 운영하며 검증 중</td>
+        <td class="eff-bad">YouTube API 미연동 (수치 직접 입력) · AI 전략 실효성 검증 중</td>
       </tr>
     </table>
   </div>
@@ -314,10 +315,7 @@
         "영상을 폴더에 넣고 Claude에 요청하면 설명문과 타임스탬프가 나온다.<br/>
         내 일은 이제 쓰는 것이 아니라 고르는 것이 됐다."
       </div>
-      <p>
-        영상 업로드 → Claude Code 분석 요청만으로 제목·설명문·타임스탬프 완성.<br/>
-        반복 작업이 사라지고, 콘텐츠 방향과 품질 판단에 집중할 수 있게 됐다.
-      </p>
+      <p>요청 한 번으로 설명문·타임스탬프 완성.<br/>반복 작업 제거 → 콘텐츠 방향 판단에 집중.</p>
     </div>
 
     <div class="lesson-card">
@@ -327,10 +325,7 @@
         "YouTube Studio 스크린샷을 공유하면 Claude가 수치를 읽고 보고서를 만든다.<br/>
         반나절 걸리던 보고서가 30분 안에 끝난다."
       </div>
-      <p>
-        데이터는 항상 있었지만 정리·분석·시각화까지 직접 하려면 시간이 너무 걸렸다.<br/>
-        스크린샷 하나로 보고서가 완성되면서 <strong>실행 속도</strong>가 달라졌다.
-      </p>
+      <p>데이터는 있었지만 분석·정리에 시간이 걸렸다.<br/>스크린샷 하나 → 보고서 완성. <strong>실행 속도</strong>가 달라졌다.</p>
     </div>
   </div>
 
