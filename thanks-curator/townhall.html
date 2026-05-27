@@ -73,24 +73,17 @@
 
     /* ── SECTION ── */
     .section {
-      margin-bottom: 48px;
+      margin-bottom: 52px;
     }
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 18px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: #1a1a1a;
+      color: #999;
       margin-bottom: 20px;
-    }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #ddd;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ebebeb;
     }
 
     /* ── TABLE ── */
@@ -98,182 +91,163 @@
       width: 100%;
       border-collapse: collapse;
       background: #fff;
-      border-radius: 10px;
+      border: 1px solid #ebebeb;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
       margin-bottom: 20px;
     }
     th {
-      background: #f5f5f5;
-      color: #1a1a1a;
-      font-size: 13px;
+      background: #fafafa;
+      color: #111;
+      font-size: 12px;
       font-weight: 700;
       padding: 12px 16px;
       text-align: left;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid #ebebeb;
     }
     td {
-      padding: 12px 16px;
+      padding: 13px 16px;
       font-size: 14px;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f3f3f3;
       vertical-align: top;
     }
     tr:last-child td { border-bottom: none; }
-    td:first-child { color: #555; font-weight: 600; width: 30%; }
+    td:first-child { color: #888; font-weight: 600; width: 28%; font-size: 13px; }
 
     /* ── CALLOUT ── */
     .callout {
-      background: #f9f9f9;
-      border-left: 4px solid #1a1a1a;
-      border-radius: 0 8px 8px 0;
-      padding: 16px 20px;
+      background: #fafafa;
+      border-left: 3px solid #111;
+      padding: 14px 18px;
       font-size: 14px;
-      color: #1a1a1a;
+      color: #222;
       margin-bottom: 20px;
     }
-    .callout strong { color: #1a1a1a; }
+    .callout strong { color: #111; }
 
     /* ── CHANNEL CARDS ── */
     .channel-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
       margin-bottom: 20px;
     }
     .channel-card {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border: 1px solid #ebebeb;
     }
     .channel-card .channel-tag {
       display: inline-block;
-      background: #1a1a1a;
+      background: #111;
       color: #fff;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
+      padding: 2px 9px;
+      border-radius: 4px;
       margin-bottom: 10px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
-    .channel-card .channel-tag.orange { background: #f97316; }
+    .channel-card .channel-tag.orange { background: #555; }
     .channel-card p {
       font-size: 13px;
-      color: #444;
-      line-height: 1.6;
+      color: #555;
+      line-height: 1.7;
     }
 
     /* ── AI TOOL CARDS ── */
     .ai-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
       margin-bottom: 20px;
     }
     .ai-card {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border: 1px solid #ebebeb;
       position: relative;
     }
     .ai-card .num {
-      width: 28px;
-      height: 28px;
-      background: #1a1a1a;
-      color: #fff;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-    .ai-card h4 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #1a1a1a;
+      color: #bbb;
+      margin-bottom: 10px;
     }
     .ai-tag {
       position: absolute;
       top: 16px;
       right: 16px;
-      background: #e0e0e0;
-      color: #666;
+      background: #f3f3f3;
+      color: #888;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 2px 8px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+    }
+    .ai-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+      padding-right: 60px;
     }
     .ai-card p {
       font-size: 13px;
-      color: #555;
-      line-height: 1.6;
+      color: #666;
+      line-height: 1.7;
     }
     .ai-card a {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 12px;
-      color: #1a1a1a;
+      color: #555;
       text-decoration: none;
-      border-bottom: 1px solid #1a1a1a;
-    }
-
-    /* ── AI IMPACT STAT ── */
-    .ai-card .impact {
-      font-size: 20px;
-      font-weight: 800;
-      color: #f97316;
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
+      border-bottom: 1px solid #ccc;
     }
 
     /* ── EFFICIENCY TABLE ── */
-    .eff-good { color: #16a34a; font-weight: 600; }
-    .eff-bad  { color: #c0392b; font-weight: 600; }
+    .eff-good { color: #1a7a4a; font-weight: 600; }
+    .eff-bad  { color: #888; font-weight: 600; }
 
     /* ── LESSON CARDS ── */
     .lesson-card {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 28px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      margin-bottom: 16px;
-      border-top: 4px solid #1a1a1a;
+      margin-bottom: 12px;
+      border: 1px solid #ebebeb;
     }
-    .lesson-card:nth-child(2) { border-top-color: #f97316; }
     .lesson-num {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #1a1a1a;
+      letter-spacing: 2px;
+      color: #bbb;
       text-transform: uppercase;
       margin-bottom: 10px;
     }
-    .lesson-card:nth-child(2) .lesson-num { color: #f97316; }
     .lesson-card h3 {
       font-size: 16px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       line-height: 1.5;
+      color: #111;
     }
     .lesson-quote {
-      background: #f5f5f5;
-      border-radius: 8px;
-      padding: 14px 18px;
+      border-left: 2px solid #ddd;
+      padding: 10px 16px;
       font-size: 14px;
       font-style: italic;
-      color: #333;
+      color: #555;
       margin-bottom: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
     }
     .lesson-card p {
       font-size: 13px;
-      color: #555;
+      color: #666;
       line-height: 1.8;
     }
 
