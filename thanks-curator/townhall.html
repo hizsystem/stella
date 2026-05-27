@@ -98,6 +98,24 @@
     }
     .callout strong { color: #000; }
 
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin: 0 0 20px;
+    }
+    .stat-card {
+      border: 1px solid #e8e8e8; border-radius: 12px;
+      padding: 20px 14px; text-align: center;
+    }
+    .stat-label { font-size: 12px; color: #999; margin-bottom: 8px; font-weight: 600; }
+    .stat-val { font-size: 28px; font-weight: 900; color: #111; line-height: 1; letter-spacing: -1px; }
+    .stat-sub { font-size: 12px; color: #bbb; margin-top: 6px; }
+    .stat-note {
+      background: #f9f9f9; border-left: 4px solid #000;
+      padding: 14px 20px; border-radius: 0 8px 8px 0;
+      font-size: 14px; color: #333; margin-bottom: 20px;
+    }
+
     /* ── CHANNEL CARDS ── */
     .channel-grid {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -227,10 +245,31 @@
       <tr><td>주요 과업</td><td>기획·촬영 지원 &nbsp;/&nbsp; 썸네일 제작 &nbsp;/&nbsp; 영상 설명문·타임스탬프 작성 &nbsp;/&nbsp; 성과 보고</td></tr>
     </table>
 
-    <div class="callout">
-      <strong>현재 성과 · 2026.05.27 기준</strong><br/>
-      구독자 <strong>4,420명</strong> · 총 조회수 <strong>126,708</strong> · 좋아요 <strong>2,556</strong> · 댓글 <strong>568</strong><br/>
-      롱폼 2편 연속 바이럴 — 노출 합산 <strong>80.2만</strong>
+    <div class="sub-title">현재 성과 · 2026.05.27 기준</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">구독자</div>
+        <div class="stat-val">4,420</div>
+        <div class="stat-sub">달성률 29.5%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">총 조회수</div>
+        <div class="stat-val">126,708</div>
+        <div class="stat-sub">롱폼 61,569 · 쇼츠 65,139</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">좋아요</div>
+        <div class="stat-val">2,556</div>
+        <div class="stat-sub">롱폼 1,817 · 쇼츠 739</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">댓글</div>
+        <div class="stat-val">568</div>
+        <div class="stat-sub">롱폼 274 · 쇼츠 294</div>
+      </div>
+    </div>
+    <div class="stat-note">
+      롱폼 2편 연속 바이럴 — 노출 합산 <strong>80.2만</strong> · Q2 목표(3,000명) 조기 달성
     </div>
 
     <div class="channel-grid">
