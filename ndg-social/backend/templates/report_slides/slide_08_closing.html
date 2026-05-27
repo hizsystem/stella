@@ -1,0 +1,38 @@
+<style>
+.s8 { width:1920px; height:1080px; background:var(--brand-primary); position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+.s8__bg-circle  { position:absolute; left:-120px;  bottom:-120px; width:600px; height:600px; border-radius:50%; border:100px solid rgba(233,69,96,0.07); }
+.s8__bg-circle2 { position:absolute; right:-80px;  top:-80px;    width:500px; height:500px; border-radius:50%; border:80px  solid rgba(255,255,255,0.04); }
+.s8__content { text-align:center; position:relative; z-index:1; }
+.s8__divider { width:80px; height:4px; background:var(--brand-highlight); margin:0 auto 48px; }
+.s8__title { font-size:64px; font-weight:900; color:white; margin-bottom:24px; line-height:1.15; }
+.s8__subtitle { font-size:32px; color:var(--brand-highlight); font-weight:600; margin-bottom:48px; }
+.s8__team-box { display:inline-flex; flex-direction:column; gap:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:32px 64px; }
+.s8__team-label { font-size:14px; color:rgba(255,255,255,0.35); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:4px; }
+.s8__team-name { font-size:22px; color:rgba(255,255,255,0.85); font-weight:600; }
+.s8__team-contact { font-size:16px; color:rgba(255,255,255,0.4); margin-top:4px; }
+.s8__month-badge { position:absolute; bottom:80px; right:80px; font-size:18px; color:rgba(255,255,255,0.25); font-weight:600; letter-spacing:0.08em; }
+</style>
+
+<div class="s8">
+  <div class="s8__bg-circle"></div>
+  <div class="s8__bg-circle2"></div>
+
+  <div class="s8__content">
+    <div class="s8__divider"></div>
+    <h1 class="s8__title">{{ data.closing_title | default('소셜 미디어 운영 보고서') }}</h1>
+    <div class="s8__subtitle">{{ data.closing_sub | default('Thank you') }}</div>
+
+    <div class="s8__team-box">
+      <div class="s8__team-label">PREPARED BY</div>
+      <div class="s8__team-name">{{ data.prepared_by | default('소셜 미디어 운영팀') }}</div>
+      {% if data.contact %}
+      <div class="s8__team-contact">{{ data.contact }}</div>
+      {% endif %}
+      {% if data.agency %}
+      <div class="s8__team-contact" style="margin-top:8px;font-size:18px;color:rgba(255,255,255,0.55)">{{ data.agency }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="s8__month-badge">{{ report_month }}</div>
+</div>

@@ -1,0 +1,156 @@
+<style>
+.s4 { width:1920px; height:1080px; background:white; display:flex; flex-direction:column; }
+.s4__body { flex:1; padding:28px 60px 0; display:flex; flex-direction:column; }
+.s4__title-row { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+.s4__section-label { font-size:13px; font-weight:700; color:var(--brand-highlight); letter-spacing:0.12em; text-transform:uppercase; }
+.s4__title { font-size:34px; font-weight:900; color:var(--brand-primary); margin-top:2px; }
+.s4__summary {
+  font-size:16px; font-weight:600; color:var(--brand-primary);
+  padding:10px 20px; background:var(--bg-gray); border-radius:8px;
+  border-left:5px solid var(--brand-highlight); margin-bottom:12px;
+}
+.s4__table-wrap { flex:1; overflow:hidden; padding-bottom:60px; }
+.s4__table {
+  width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed;
+}
+.s4__table colgroup col { }
+.s4__table thead tr th {
+  background:var(--brand-primary); color:white;
+  padding:9px 6px; text-align:center;
+  font-size:12px; font-weight:600; letter-spacing:0.03em;
+  white-space:nowrap; border-right:1px solid rgba(255,255,255,0.12);
+}
+.s4__table thead tr th:last-child { border-right:none; }
+.s4__table tbody tr td {
+  padding:7px 6px; border-bottom:1px solid #E5E7EB;
+  text-align:center; vertical-align:middle; font-size:13px;
+  border-right:1px solid #F0F0F2;
+}
+.s4__table tbody tr td:last-child { border-right:none; }
+.s4__table tbody tr.tr-feed td { background:#FFFFFF; }
+.s4__table tbody tr.tr-story td { background:#F5F7FF; }
+.s4__table tbody td.td-date {
+  font-weight:700; color:var(--brand-primary); font-size:13px;
+  background:var(--bg-gray) !important;
+}
+.s4__table tbody td.td-title {
+  text-align:left; font-size:12px; padding-left:10px;
+  background:var(--bg-gray) !important;
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+}
+.s4__table tbody td.td-type { font-size:12px; font-weight:600; }
+.s4__table tbody td.td-feed  { color:var(--brand-accent); }
+.s4__table tbody td.td-story { color:var(--text-muted); }
+.s4__table tbody td.td-num { font-variant-numeric:tabular-nums; }
+.s4__table tbody td.td-inter { font-weight:700; color:var(--brand-primary); }
+.s4__table tbody td.td-reach { color:#0F3460; font-weight:600; }
+.s4__table tbody td.td-ad { color:#E94560; font-weight:600; }
+</style>
+
+<div class="s4">
+  <div class="slide-header">
+    <div class="slide-header__client">{{ client }}</div>
+    <div class="slide-header__section">ENGAGEMENT</div>
+    <div style="color:rgba(255,255,255,0.4);font-size:16px">{{ report_month }}</div>
+  </div>
+
+  <div class="s4__body">
+    <div class="s4__title-row">
+      <div>
+        <div class="s4__section-label">ENGAGEMENT</div>
+        <div class="s4__title">{{ data.section_title | default(report_month + ' 인게이지먼트') }}</div>
+      </div>
+    </div>
+
+    {% if data.summary_sentence %}
+    <div class="s4__summary">{{ data.summary_sentence }}</div>
+    {% endif %}
+
+    <div class="s4__table-wrap">
+      <table class="s4__table">
+        <colgroup>
+          <col style="width:42px">   <!-- NO -->
+          <col style="width:58px">   <!-- 날짜 -->
+          <col style="width:240px">  <!-- 콘텐츠명 -->
+          <col style="width:85px">   <!-- 구분 -->
+          <col style="width:95px">   <!-- 노출 -->
+          <col style="width:110px">  <!-- 도달 -->
+          <col style="width:72px">   <!-- 좋아요 -->
+          <col style="width:68px">   <!-- 댓글 -->
+          <col style="width:65px">   <!-- 저장 -->
+          <col style="width:65px">   <!-- 공유 -->
+          <col style="width:108px">  <!-- 총 인터랙션 -->
+          <col style="width:72px">   <!-- 프로필 방문 -->
+          <col style="width:65px">   <!-- 팔로우 -->
+          <col style="width:95px">   <!-- 광고비 -->
+        </colgroup>
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th>날짜</th>
+            <th>콘텐츠명</th>
+            <th>구분</th>
+            <th>노출</th>
+            <th>도달</th>
+            <th>좋아요</th>
+            <th>댓글</th>
+            <th>저장</th>
+            <th>공유</th>
+            <th>총 인터랙션</th>
+            <th>프로필 방문</th>
+            <th>팔로우</th>
+            <th>광고비</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data.content_table | default([]) %}
+          {% set ct = row.content_type | default('feed') %}
+          <tr class="tr-{{ ct }}">
+            <td class="td-num">{{ row.no }}</td>
+
+            {# 날짜 셀: date_rowspan > 0이면 렌더, 0이면 병합됨 #}
+            {% if row.date_rowspan is defined and row.date_rowspan == 0 %}
+            {# merged — skip #}
+            {% else %}
+            <td class="td-date"
+              {% if row.date_rowspan is defined and row.date_rowspan > 1 %}rowspan="{{ row.date_rowspan }}"{% endif %}>
+              {{ row.date }}
+            </td>
+            {% endif %}
+
+            {# 제목 셀: title_rowspan > 0이면 렌더, 0이면 병합됨 #}
+            {% if row.title_rowspan is defined and row.title_rowspan == 0 %}
+            {# merged — skip #}
+            {% else %}
+            <td class="td-title"
+              {% if row.title_rowspan is defined and row.title_rowspan > 1 %}rowspan="{{ row.title_rowspan }}"{% endif %}
+              title="{{ row.title }}">
+              {{ row.title }}
+            </td>
+            {% endif %}
+
+            <td class="td-type td-{{ ct }}">
+              {{ '피드&릴스' if ct != 'story' else '스토리' }}
+            </td>
+            <td class="td-num">{{ row.impressions | default(0) | format_number }}</td>
+            <td class="td-num td-reach">{{ row.reach | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.likes | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.comments | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.saves | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.shares | default(0) | format_number }}</td>
+            <td class="td-num td-inter">{{ row.interactions | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.profile_visits | default(0) | format_number }}</td>
+            <td class="td-num">{{ row.follows | default(0) | format_number }}</td>
+            <td class="td-num td-ad">{{ row.ad_spend | default(0) | format_number }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="slide-footer__text">{{ client }} | {{ report_month }}</div>
+    <div class="slide-footer__text">소셜 미디어 운영 보고서</div>
+  </div>
+</div>

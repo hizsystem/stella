@@ -1,0 +1,27 @@
+[phases.setup]
+nixPkgs = [
+  "python312",
+  "chromium",
+  "nss",
+  "nspr",
+  "atk",
+  "at-spi2-atk",
+  "xorg.libXcomposite",
+  "xorg.libXdamage",
+  "xorg.libXfixes",
+  "xorg.libXrandr",
+  "xorg.libxcb",
+  "libxkbcommon",
+  "pango",
+  "cairo",
+  "alsa-lib",
+]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements.txt",
+  "playwright install chromium",
+]
+
+[start]
+cmd = "python init_admin.py && uvicorn backend.main:app --host 0.0.0.0 --port $PORT"

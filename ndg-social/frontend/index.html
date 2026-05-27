@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NDG 보고서 시스템 — 대시보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- 사이드바 -->
+  <nav class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-text">NDG Report</div>
+      <div class="sidebar__logo-sub">소셜 보고서 자동화</div>
+    </div>
+    <ul class="sidebar__nav">
+      <li class="sidebar__nav-item">
+        <a href="/" class="sidebar__nav-link active">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          대시보드
+        </a>
+      </li>
+      <li class="sidebar__nav-item">
+        <a href="/new" class="sidebar__nav-link">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          새 보고서
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar__footer">AI 에이전트 v1.0</div>
+  </nav>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-header__title">보고서 대시보드</h1>
+        <p class="page-header__subtitle">HIZ-NDG 월간 SNS 운영 보고서</p>
+      </div>
+      <a href="/new" class="btn btn--accent btn--lg">+ 새 보고서 만들기</a>
+    </div>
+
+    <div class="page-body">
+
+      <!-- 통계 카드 4개 -->
+      <div class="dashboard-stats section" id="stats-section">
+        <div class="stat-card">
+          <div class="stat-card__label">전체 보고서</div>
+          <div class="stat-card__value" id="stat-total">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">이번 달 작성</div>
+          <div class="stat-card__value" id="stat-month">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">작성 중</div>
+          <div class="stat-card__value" id="stat-in-progress">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">내보내기 완료</div>
+          <div class="stat-card__value" id="stat-exported">—</div>
+        </div>
+      </div>
+
+      <!-- KPI 서머리 패널 -->
+      <div class="kpi-summary-card">
+        <div class="kpi-summary-header">
+          <span class="kpi-summary-title">KPI 서머리</span>
+          <span style="font-size:var(--font-size-xs);color:var(--color-text-muted)">7월 ~</span>
+        </div>
+        <div id="kpi-summary-body">
+          <p style="color:#9CA3AF;font-size:13px;text-align:center;padding:20px 0">불러오는 중...</p>
+        </div>
+      </div>
+
+      <!-- 보고서 목록 -->
+      <section class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)">
+          <h2 class="section__title" style="margin:0">보고서 목록</h2>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="" onclick="setFilter('')">전체</button>
+            <button class="filter-tab" data-filter="in_progress" onclick="setFilter('in_progress')">진행중</button>
+            <button class="filter-tab" data-filter="pending_review" onclick="setFilter('pending_review')">검토대기</button>
+            <button class="filter-tab" data-filter="done" onclick="setFilter('done')">완료</button>
+          </div>
+        </div>
+        <div class="report-grid" id="report-grid">
+          <div style="grid-column:1/-1;text-align:center;padding:var(--space-16);color:var(--color-text-muted)">
+            불러오는 중...
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- 삭제 확인 모달 -->
+<div class="modal-backdrop" id="delete-modal" style="display:none">
+  <div class="modal">
+    <h2 class="modal__title">보고서 삭제</h2>
+    <p style="color:var(--color-text-secondary);font-size:var(--font-size-sm)">
+      이 보고서를 삭제하면 복구할 수 없습니다. 계속하시겠습니까?
+    </p>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeDeleteModal()">취소</button>
+      <button class="btn btn--danger" id="confirm-delete-btn">삭제</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="/static/js/api.js?v=16"></script>
+<script src="/static/js/dashboard.js?v=23"></script>
+</body>
+</html>

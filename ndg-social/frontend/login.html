@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 — NDG 보고서 시스템</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard Variable', Pretendard, sans-serif;
+      background: var(--color-bg-page);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+    }
+    .login-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+    }
+    .login-logo {
+      display: inline-block;
+      background: var(--color-brand-accent);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .login-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--color-brand-primary);
+      margin-bottom: 8px;
+    }
+    .login-sub {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-bottom: 36px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--color-brand-primary);
+      background: white;
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--color-brand-accent);
+    }
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--color-brand-primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.15s;
+    }
+    .btn-login:hover { opacity: 0.88; }
+    .btn-login:disabled { opacity: 0.5; cursor: not-allowed; }
+    .error-msg {
+      display: none;
+      background: #FEE2E2;
+      color: #991B1B;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .divider {
+      text-align: center;
+      margin: 24px 0 16px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+    .btn-register {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--color-brand-accent);
+      border: 1.5px solid var(--color-brand-accent);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-register:hover {
+      background: var(--color-brand-accent);
+      color: white;
+    }
+    .register-section {
+      display: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--color-border);
+    }
+    .register-section .form-group { margin-bottom: 16px; }
+    .register-section .form-group input { padding: 10px 14px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">HIZ-NDG</div>
+      <h1 class="login-title">소셜 보고서 시스템</h1>
+      <p class="login-sub">계정으로 로그인하여 시작하세요</p>
+
+      <div class="error-msg" id="error-msg"></div>
+
+      <!-- 로그인 폼 -->
+      <div class="form-group">
+        <label>이메일</label>
+        <input type="email" id="email" placeholder="example@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="password" placeholder="비밀번호 입력" autocomplete="current-password">
+      </div>
+      <button class="btn-login" id="login-btn" onclick="doLogin()">로그인</button>
+
+      <div class="divider">— 계정이 없으신가요? —</div>
+      <button class="btn-register" onclick="toggleRegister()">새 계정 만들기</button>
+
+      <!-- 회원가입 폼 (토글) -->
+      <div class="register-section" id="register-section">
+        <div class="form-group">
+          <label>이름</label>
+          <input type="text" id="reg-name" placeholder="홍길동">
+        </div>
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="reg-email" placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <input type="password" id="reg-password" placeholder="8자 이상">
+        </div>
+        <button class="btn-login" id="register-btn" onclick="doRegister()">계정 생성 후 로그인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enter 키 로그인
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const reg = document.getElementById('register-section');
+        if (reg.style.display === 'block') doRegister();
+        else doLogin();
+      }
+    });
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('error-msg').style.display = 'none';
+    }
+
+    function toggleRegister() {
+      const sec = document.getElementById('register-section');
+      sec.style.display = sec.style.display === 'block' ? 'none' : 'block';
+      hideError();
+    }
+
+    async function doLogin() {
+      hideError();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      if (!email || !password) { showError('이메일과 비밀번호를 입력해주세요'); return; }
+
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = '로그인 중...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || '로그인 실패');
+        localStorage.setItem('ndg_token', data.access_token);
+        window.location.href = '/';
+      } catch (e) {
+        showError(e.message);
+        btn.disabled = false;
+        btn.textContent = '로그인';
+      }
+    }
+
+    async function doRegister() {
+      hideError();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+      if (!name || !email || !password) { showError('모든 항목을 입력해주세요'); return; }
+      if (password.length < 6) { showError('비밀번호는 6자 이상이어야 합니다'); return; }
+
+      const btn = document.getElementById('register-btn');
+      btn.disabled = true;
+      btn.textContent = '생성 중...';
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password, role: 'editor' }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || '계정 생성 실패');
+
+        // 바로 로그인
+        document.getElementById('email').value = email;
+        document.getElementById('password').value = password;
+        await doLogin();
+      } catch (e) {
+        showError(e.message);
+        btn.disabled = false;
+        btn.textContent = '계정 생성 후 로그인';
+      }
+    }
+
+    // 이미 로그인돼 있으면 홈으로
+    if (localStorage.getItem('ndg_token')) {
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>

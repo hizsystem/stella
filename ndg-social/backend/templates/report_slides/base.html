@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ client }} {{ report_month }} 소셜 운영 보고서</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #1A1A1A;
+    }
+    .report-container { }
+
+    /* ── 슬라이드 공통 ── */
+    .slide-page {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      page-break-after: always;
+      position: relative;
+    }
+    .slide-page:last-child { page-break-after: avoid; }
+
+    /* ── 색상 토큰 ── */
+    :root {
+      --brand-primary:   #1A1A2E;
+      --brand-secondary: #16213E;
+      --brand-accent:    #0F3460;
+      --brand-highlight: #E94560;
+      --trend-up:   #2ECC71;
+      --trend-down: #E74C3C;
+      --bg-gray:    #F5F5F7;
+      --text-muted: #6B7280;
+    }
+
+    /* ── 슬라이드 헤더 공통 ── */
+    .slide-header {
+      height: 100px;
+      background: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+    }
+    .slide-header__client {
+      font-size: 20px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.1em;
+    }
+    .slide-header__month {
+      font-size: 18px;
+      color: rgba(255,255,255,0.5);
+    }
+    .slide-header__section {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--brand-highlight);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── 슬라이드 푸터 공통 ── */
+    .slide-footer {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 56px;
+      background: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+    }
+    .slide-footer__text { font-size: 14px; color: rgba(255,255,255,0.4); }
+
+    /* ── PDF 출력 ── */
+    @media print {
+      body { background: white; }
+      .slide-page {
+        width: 100%;
+        height: auto;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="report-container">
+  {% for slide in slides %}
+  <div class="slide-page" data-slide="{{ slide.number }}" data-template="{{ slide.template }}">
+    {{ slide.html | safe }}
+  </div>
+  {% endfor %}
+</div>
+</body>
+</html>

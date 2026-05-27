@@ -1,0 +1,289 @@
+/*
+ * SLIDES.CSS — 16:9 슬라이드 렌더링 스타일
+ * 1920×1080 기준, CSS transform으로 스케일 조정
+ * Figma 컴포넌트와 1:1 대응하는 클래스명 구조
+ */
+
+/* ── 슬라이드 스테이지 (컨테이너) ─────────────────────────────── */
+.slide-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2D2D2D;
+  padding: var(--space-8);
+  min-height: calc(100vh - var(--toolbar-height));
+}
+
+.slide-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  box-shadow: var(--shadow-slide);
+}
+
+/* 실제 슬라이드 캔버스 (1920×1080 → transform으로 축소) */
+.slide-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  overflow: hidden;
+  font-family: var(--font-family-primary);
+
+  /* 다크모드 차단 — 슬라이드는 항상 라이트 모드 */
+  color-scheme: light;
+  --color-bg-base:        #FFFFFF;
+  --color-bg-surface:     #F8F9FC;
+  --color-text-primary:   #1A1A2E;
+  --color-text-secondary: #4A5568;
+  --color-text-muted:     #8B90A8;
+  --color-slide-bg-gray:  #F8F9FC;
+  --color-border-default: #ECEEF3;
+}
+
+/* ── 공통 슬라이드 요소 ────────────────────────────────────────── */
+.slide__header {
+  height: var(--slide-header-height);
+  padding: 0 var(--slide-padding-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.slide__footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: var(--slide-footer-height);
+  padding: 0 var(--slide-padding-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-slide-small);
+}
+.slide__body {
+  padding: 0 var(--slide-padding-x);
+  flex: 1;
+}
+.slide__section-label {
+  font-size: var(--font-size-slide-caption);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+.slide__section-title {
+  font-size: var(--font-size-slide-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-8);
+}
+
+/* ── 슬라이드 1: Title ─────────────────────────────────────────── */
+.slide--title {
+  background: var(--color-slide-bg-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.slide--title .slide__main-title {
+  font-size: var(--font-size-slide-hero);
+  font-weight: var(--font-weight-black);
+  color: var(--color-text-inverse);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-4);
+}
+.slide--title .slide__sub-title {
+  font-size: var(--font-size-slide-heading);
+  color: var(--color-brand-highlight);
+  font-weight: var(--font-weight-semibold);
+}
+.slide--title .slide__client-badge {
+  display: inline-block;
+  padding: var(--space-2) var(--space-6);
+  background: var(--color-brand-highlight);
+  color: white;
+  font-size: var(--font-size-slide-caption);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-8);
+}
+.slide--title .slide__divider {
+  width: 80px; height: 4px;
+  background: var(--color-brand-highlight);
+  margin: var(--space-6) 0;
+}
+
+/* ── 슬라이드 3: KPI ───────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--slide-gutter);
+  margin-top: var(--space-8);
+}
+.kpi-metric-card {
+  background: var(--color-slide-bg-gray);
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  border-left: 6px solid var(--color-brand-highlight);
+}
+.kpi-metric-card__label {
+  font-size: var(--font-size-slide-caption);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+.kpi-metric-card__value {
+  font-size: var(--font-size-slide-metric);
+  font-weight: var(--font-weight-black);
+  color: var(--color-brand-primary);
+  line-height: 1;
+}
+.kpi-metric-card__delta {
+  font-size: var(--font-size-slide-delta);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--space-2);
+}
+.kpi-metric-card__delta.trend-up   { color: var(--color-trend-up); }
+.kpi-metric-card__delta.trend-down { color: var(--color-trend-down); }
+
+/* ── 슬라이드 7: Operating Review ────────────────────────────────── */
+.review-insights {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: var(--space-8);
+}
+.review-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 36px 48px;
+  background: var(--color-slide-bg-gray);
+  border-radius: var(--radius-xl);
+}
+.review-insight__number {
+  width: 64px; height: 64px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-slide-heading);
+  font-weight: var(--font-weight-black);
+  color: white;
+  flex-shrink: 0;
+}
+.review-insight[data-category="성과"] .review-insight__number { background: var(--color-success); }
+.review-insight[data-category="효율"] .review-insight__number { background: var(--color-info); }
+.review-insight[data-category="개선"] .review-insight__number { background: var(--color-warning); }
+.review-insight__content { flex: 1; }
+.review-insight__category {
+  font-size: var(--font-size-slide-caption);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+}
+.review-insight[data-category="성과"] .review-insight__category { color: var(--color-success); }
+.review-insight[data-category="효율"] .review-insight__category { color: var(--color-info); }
+.review-insight[data-category="개선"] .review-insight__category { color: var(--color-warning); }
+.review-insight__text {
+  font-size: var(--font-size-slide-body);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ── 인게이지먼트 차트 바 ─────────────────────────────────────── */
+.engagement-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.engagement-bar__label {
+  width: 80px;
+  font-size: var(--font-size-slide-caption);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+.engagement-bar__track {
+  flex: 1;
+  height: 24px;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.engagement-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-highlight);
+  transition: width var(--transition-slow);
+}
+.engagement-bar__value {
+  width: 80px;
+  font-size: var(--font-size-slide-caption);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+/* ── 인기 콘텐츠 카드 ─────────────────────────────────────────── */
+.popular-post-card {
+  background: var(--color-slide-bg-gray);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  display: flex;
+  gap: 24px;
+}
+.popular-post-card__rank {
+  font-size: 80px;
+  font-weight: var(--font-weight-black);
+  color: var(--color-border-default);
+  line-height: 1;
+}
+.popular-post-card__content { flex: 1; }
+.popular-post-card__type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-slide-small);
+  font-weight: var(--font-weight-bold);
+  background: var(--color-brand-highlight);
+  color: white;
+  margin-bottom: var(--space-2);
+}
+.popular-post-card__desc {
+  font-size: var(--font-size-slide-caption);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-4);
+}
+.popular-post-card__stats {
+  display: flex;
+  gap: 32px;
+}
+.popular-post-card__stat {
+  display: flex;
+  flex-direction: column;
+}
+.popular-post-card__stat-label {
+  font-size: var(--font-size-slide-small);
+  color: var(--color-text-secondary);
+}
+.popular-post-card__stat-value {
+  font-size: var(--font-size-slide-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-primary);
+}
+
+/* ── PDF 출력용 미디어 쿼리 ──────────────────────────────────── */
+@media print {
+  .slide-stage { background: white; padding: 0; }
+  .slide-wrapper { max-width: none; width: 297mm; height: 210mm; }
+  .slide-canvas {
+    width: 100%; height: 100%;
+    transform: none !important;
+  }
+}

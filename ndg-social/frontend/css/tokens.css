@@ -1,0 +1,166 @@
+/*
+ * NDG REPORT SYSTEM — DESIGN TOKENS
+ * Figma Variables 직접 매핑 구조
+ * Figma Tokens 플러그인으로 figma-tokens.json 내보내기 가능
+ *
+ * 매핑 규칙:
+ *   --color-*        → Figma Color Variables
+ *   --font-size-*    → Figma Number Variables (Typography)
+ *   --space-*        → Figma Number Variables (Spacing)
+ *   --radius-*       → Figma Number Variables (Radius)
+ */
+
+:root {
+
+  /* ── 브랜드 컬러 (HIZ-NDG) ─────────────────────────────── */
+  --color-brand-primary:      #1A1A2E;   /* Figma: color/brand/primary */
+  --color-brand-secondary:    #16213E;   /* Figma: color/brand/secondary */
+  --color-brand-accent:       #0F3460;   /* Figma: color/brand/accent */
+  --color-brand-highlight:    #E94560;   /* Figma: color/brand/highlight */
+
+  /* ── 시맨틱 컬러 ─────────────────────────────────────────── */
+  --color-success:            #2ECC71;
+  --color-warning:            #F39C12;
+  --color-danger:             #E74C3C;
+  --color-info:               #3498DB;
+
+  /* ── 지표 트렌드 컬러 ────────────────────────────────────── */
+  --color-trend-up:           #2ECC71;   /* Figma: color/metric/up */
+  --color-trend-down:         #E74C3C;   /* Figma: color/metric/down */
+  --color-trend-neutral:      #95A5A6;   /* Figma: color/metric/neutral */
+
+  /* ── 배경 ────────────────────────────────────────────────── */
+  --color-bg-base:            #FFFFFF;
+  --color-bg-surface:         #F8F9FA;
+  --color-bg-elevated:        #FFFFFF;
+  --color-bg-overlay:         rgba(0, 0, 0, 0.5);
+
+  /* 슬라이드 배경 */
+  --color-slide-bg-dark:      #1A1A2E;
+  --color-slide-bg-light:     #FFFFFF;
+  --color-slide-bg-accent:    #F0F4FF;
+  --color-slide-bg-gray:      #F5F5F7;
+
+  /* ── 텍스트 ──────────────────────────────────────────────── */
+  --color-text-primary:       #1A1A2E;
+  --color-text-secondary:     #4A5568;
+  --color-text-muted:         #9CA3AF;
+  --color-text-inverse:       #FFFFFF;
+  --color-text-on-dark:       #E2E8F0;
+  --color-text-accent:        #E94560;
+
+  /* ── 보더 ────────────────────────────────────────────────── */
+  --color-border-default:     #E5E7EB;
+  --color-border-strong:      #D1D5DB;
+  --color-border-focus:       #1A1A2E;
+  --color-border-brand:       #E94560;
+
+  /* ── 타이포그래피 ────────────────────────────────────────── */
+  --font-family-primary:      'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
+  --font-family-display:      'Pretendard Variable', Pretendard, sans-serif;
+  --font-family-mono:         'JetBrains Mono', 'Consolas', monospace;
+
+  /* 슬라이드 폰트 사이즈 (1920×1080 기준, px) */
+  --font-size-slide-hero:     72px;      /* 슬라이드 1 메인 타이틀 */
+  --font-size-slide-title:    48px;      /* 섹션 타이틀 */
+  --font-size-slide-heading:  36px;      /* 서브 헤딩 */
+  --font-size-slide-body:     24px;      /* 본문 */
+  --font-size-slide-caption:  18px;      /* 캡션, 주석 */
+  --font-size-slide-small:    18px;      /* 각주 */
+  --font-size-slide-metric:   56px;      /* KPI 숫자 강조 */
+  --font-size-slide-delta:    28px;      /* 증감 표시 */
+
+  /* 대시보드 폰트 사이즈 (rem, 반응형) */
+  --font-size-xs:             0.75rem;   /* 12px */
+  --font-size-sm:             0.875rem;  /* 14px */
+  --font-size-md:             1rem;      /* 16px */
+  --font-size-lg:             1.125rem;  /* 18px */
+  --font-size-xl:             1.25rem;   /* 20px */
+  --font-size-2xl:            1.5rem;    /* 24px */
+  --font-size-3xl:            1.875rem;  /* 30px */
+  --font-size-4xl:            2.25rem;   /* 36px */
+
+  /* 폰트 굵기 */
+  --font-weight-regular:      400;
+  --font-weight-medium:       500;
+  --font-weight-semibold:     600;
+  --font-weight-bold:         700;
+  --font-weight-black:        900;
+
+  /* 줄간격 */
+  --line-height-tight:        1.2;
+  --line-height-normal:       1.5;
+  --line-height-relaxed:      1.75;
+
+  /* ── 간격 (4px 기반) ─────────────────────────────────────── */
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;
+  --space-5:    20px;
+  --space-6:    24px;
+  --space-8:    32px;
+  --space-10:   40px;
+  --space-12:   48px;
+  --space-16:   64px;
+  --space-20:   80px;
+  --space-24:   96px;
+
+  /* 슬라이드 간격 */
+  --slide-padding-x:          80px;
+  --slide-padding-y:          60px;
+  --slide-header-height:      100px;
+  --slide-footer-height:      60px;
+  --slide-gutter:             40px;
+
+  /* ── 보더 반경 ───────────────────────────────────────────── */
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:    12px;
+  --radius-xl:    16px;
+  --radius-2xl:   24px;
+  --radius-full:  9999px;
+
+  /* ── 그림자 ──────────────────────────────────────────────── */
+  --shadow-sm:    0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:    0 4px 6px -1px rgba(0,0,0,0.10), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg:    0 10px 15px -3px rgba(0,0,0,0.10), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl:    0 20px 25px -5px rgba(0,0,0,0.10), 0 10px 10px -5px rgba(0,0,0,0.04);
+  --shadow-slide: 0 20px 60px rgba(0,0,0,0.20);
+
+  /* ── 레이아웃 ────────────────────────────────────────────── */
+  --slide-width:          1920px;
+  --slide-height:         1080px;
+  --slide-ratio:          calc(16 / 9);
+
+  --sidebar-width:        240px;
+  --toolbar-height:       64px;
+  --content-max-width:    1200px;
+  --panel-width:          320px;
+
+  /* ── 애니메이션 ──────────────────────────────────────────── */
+  --transition-fast:      150ms ease;
+  --transition-base:      250ms ease;
+  --transition-slow:      400ms ease;
+
+  /* ── Z-Index ─────────────────────────────────────────────── */
+  --z-base:       0;
+  --z-raised:     10;
+  --z-dropdown:   100;
+  --z-sticky:     200;
+  --z-overlay:    300;
+  --z-modal:      400;
+  --z-toast:      500;
+}
+
+/* ── 다크모드 (대시보드 전용) ──────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-base:         #0F172A;
+    --color-bg-surface:      #1E293B;
+    --color-bg-elevated:     #334155;
+    --color-text-primary:    #F1F5F9;
+    --color-text-secondary:  #94A3B8;
+    --color-border-default:  #334155;
+  }
+}

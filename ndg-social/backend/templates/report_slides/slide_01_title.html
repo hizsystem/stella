@@ -1,0 +1,23 @@
+<style>
+.s1 { width:1920px; height:1080px; background:var(--brand-primary); position:relative; display:flex; flex-direction:column; justify-content:center; }
+.s1__content { padding: 0 160px; }
+.s1__badge { display:inline-block; padding:10px 32px; background:var(--brand-highlight); color:white; font-size:22px; font-weight:700; border-radius:999px; margin-bottom:48px; letter-spacing:0.08em; }
+.s1__divider { width:80px; height:4px; background:var(--brand-highlight); margin-bottom:40px; }
+.s1__title { font-size:72px; font-weight:900; color:white; line-height:1.1; margin-bottom:24px; }
+.s1__subtitle { font-size:40px; color:var(--brand-highlight); font-weight:600; margin-bottom:16px; }
+.s1__meta { font-size:20px; color:rgba(255,255,255,0.4); margin-top:48px; }
+.s1__bg-circle { position:absolute; right:-100px; top:-100px; width:600px; height:600px; border-radius:50%; border:120px solid rgba(233,69,96,0.08); }
+.s1__bg-circle2 { position:absolute; right:200px; bottom:-200px; width:800px; height:800px; border-radius:50%; border:80px solid rgba(255,255,255,0.04); }
+</style>
+
+<div class="s1">
+  <div class="s1__bg-circle"></div>
+  <div class="s1__bg-circle2"></div>
+  <div class="s1__content">
+    <div class="s1__badge">{{ data.client_name | default('HIZ-NDG') }}</div>
+    <div class="s1__divider"></div>
+    <h1 class="s1__title">{{ data.main_title | default('NDG 소셜 미디어 운영 보고서') }}</h1>
+    <div class="s1__subtitle">{{ data.sub_title | default('') }}</div>
+    <div class="s1__meta">{{ data.prepared_by | default('소셜 미디어 운영팀') }}</div>
+  </div>
+</div>

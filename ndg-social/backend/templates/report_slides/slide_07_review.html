@@ -1,0 +1,78 @@
+<style>
+.s7 { width:1920px; height:1080px; background:white; display:flex; flex-direction:column; }
+.s7__body { flex:1; padding:60px 80px; display:flex; flex-direction:column; }
+.s7__insights { display:grid; grid-template-columns:repeat(3, 1fr); gap:40px; flex:1; }
+.s7__insight-card { border-radius:20px; padding:48px 40px; display:flex; flex-direction:column; }
+.s7__insight-card--achievement { background:#EFF6FF; border-top:8px solid #3B82F6; }
+.s7__insight-card--efficiency  { background:#ECFDF5; border-top:8px solid #10B981; }
+.s7__insight-card--improvement { background:#FFF7ED; border-top:8px solid #F59E0B; }
+.s7__insight-num { font-size:72px; font-weight:900; line-height:1; margin-bottom:8px; }
+.s7__insight-card--achievement .s7__insight-num { color:#BFDBFE; }
+.s7__insight-card--efficiency  .s7__insight-num { color:#A7F3D0; }
+.s7__insight-card--improvement .s7__insight-num { color:#FDE68A; }
+.s7__insight-category { font-size:16px; font-weight:700; letter-spacing:0.1em; margin-bottom:20px; }
+.s7__insight-card--achievement .s7__insight-category { color:#3B82F6; }
+.s7__insight-card--efficiency  .s7__insight-category { color:#10B981; }
+.s7__insight-card--improvement .s7__insight-category { color:#F59E0B; }
+.s7__insight-title { font-size:28px; font-weight:800; color:var(--brand-primary); line-height:1.3; margin-bottom:16px; }
+.s7__insight-body { font-size:20px; color:#374151; line-height:1.6; flex:1; }
+.s7__insight-metric { margin-top:auto; padding-top:20px; border-top:1px solid rgba(0,0,0,0.08); font-size:18px; font-weight:700; }
+.s7__insight-card--achievement .s7__insight-metric { color:#3B82F6; }
+.s7__insight-card--efficiency  .s7__insight-metric { color:#10B981; }
+.s7__insight-card--improvement .s7__insight-metric { color:#F59E0B; }
+</style>
+
+<div class="s7">
+  <div class="slide-header">
+    <div class="slide-header__client">{{ client }}</div>
+    <div class="slide-header__section">OPERATION REVIEW</div>
+    <div style="color:rgba(255,255,255,0.4);font-size:16px">{{ report_month }}</div>
+  </div>
+  <div class="s7__body">
+    <div style="margin-bottom:40px">
+      <div style="font-size:18px;color:var(--brand-highlight);font-weight:700;letter-spacing:0.1em;margin-bottom:8px">OPERATION REVIEW</div>
+      <h2 style="font-size:48px;font-weight:900;color:var(--brand-primary)">{{ data.section_title | default('오퍼레이션 리뷰') }}</h2>
+    </div>
+
+    <div class="s7__insights">
+      {% set categories = ['achievement', 'efficiency', 'improvement'] %}
+      {% set cat_labels  = ['성과', '효율', '개선'] %}
+
+      {% for insight in data.insights | default([]) %}
+      {% set idx = loop.index0 %}
+      {% set cat = categories[idx] if idx < 3 else 'achievement' %}
+      {% set lbl = cat_labels[idx]  if idx < 3 else '성과' %}
+      <div class="s7__insight-card s7__insight-card--{{ cat }}">
+        <div class="s7__insight-num">0{{ loop.index }}</div>
+        <div class="s7__insight-category">{{ insight.category | default(lbl) | upper }}</div>
+        <div class="s7__insight-title">{{ insight.title | default('') }}</div>
+        <div class="s7__insight-body">{{ insight.body | default('') }}</div>
+        {% if insight.metric %}
+        <div class="s7__insight-metric">→ {{ insight.metric }}</div>
+        {% endif %}
+      </div>
+      {% else %}
+      <!-- fallback: 데이터 없을 때 빈 카드 3개 -->
+      <div class="s7__insight-card s7__insight-card--achievement" style="opacity:0.3">
+        <div class="s7__insight-num">01</div>
+        <div class="s7__insight-category">성과</div>
+        <div class="s7__insight-title">—</div>
+      </div>
+      <div class="s7__insight-card s7__insight-card--efficiency" style="opacity:0.3">
+        <div class="s7__insight-num">02</div>
+        <div class="s7__insight-category">효율</div>
+        <div class="s7__insight-title">—</div>
+      </div>
+      <div class="s7__insight-card s7__insight-card--improvement" style="opacity:0.3">
+        <div class="s7__insight-num">03</div>
+        <div class="s7__insight-category">개선</div>
+        <div class="s7__insight-title">—</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer__text">{{ client }} | {{ report_month }}</div>
+    <div class="slide-footer__text">소셜 미디어 운영 보고서</div>
+  </div>
+</div>

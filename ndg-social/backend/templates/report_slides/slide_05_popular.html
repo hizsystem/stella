@@ -1,0 +1,59 @@
+<style>
+.s5 { width:1920px; height:1080px; background:white; display:flex; flex-direction:column; }
+.s5__body { flex:1; padding:48px 80px; display:flex; flex-direction:column; gap:24px; }
+.s5__post-card { background:var(--bg-gray); border-radius:16px; padding:32px 40px; display:flex; align-items:flex-start; gap:32px; flex:1; }
+.s5__rank { font-size:80px; font-weight:900; color:#D1D5DB; line-height:1; min-width:80px; }
+.s5__post-content { flex:1; }
+.s5__type-badge { display:inline-block; padding:6px 16px; border-radius:999px; font-size:16px; font-weight:700; background:var(--brand-highlight); color:white; margin-bottom:12px; }
+.s5__date { font-size:16px; color:var(--text-muted); margin-bottom:8px; }
+.s5__desc { font-size:22px; color:var(--brand-primary); line-height:1.5; margin-bottom:16px; }
+.s5__stats { display:flex; gap:40px; }
+.s5__stat { display:flex; flex-direction:column; }
+.s5__stat-label { font-size:14px; color:var(--text-muted); }
+.s5__stat-value { font-size:28px; font-weight:700; color:var(--brand-primary); }
+.s5__insight { padding:20px 32px; background:var(--brand-primary); border-radius:12px; margin-top:auto; }
+.s5__insight-text { font-size:22px; font-weight:600; color:white; }
+</style>
+
+<div class="s5">
+  <div class="slide-header">
+    <div class="slide-header__client">{{ client }}</div>
+    <div class="slide-header__section">POPULAR CONTENT</div>
+    <div style="color:rgba(255,255,255,0.4);font-size:16px">{{ report_month }}</div>
+  </div>
+  <div class="s5__body">
+    <div>
+      <div style="font-size:18px;color:var(--brand-highlight);font-weight:700;letter-spacing:0.1em;margin-bottom:8px">POPULAR</div>
+      <h2 style="font-size:44px;font-weight:900;color:var(--brand-primary)">{{ data.section_title | default('인기 콘텐츠 분석') }}</h2>
+    </div>
+
+    {% for post in data.top_posts | default([]) %}
+    <div class="s5__post-card">
+      <div class="s5__rank">{{ post.rank }}</div>
+      <div class="s5__post-content">
+        <div class="s5__type-badge">{{ post.type | upper }}</div>
+        <div class="s5__date">{{ post.date }}</div>
+        <div class="s5__desc">{{ post.description }}</div>
+        <div class="s5__stats">
+          {% if post.stats %}
+          <div class="s5__stat"><span class="s5__stat-label">좋아요</span><span class="s5__stat-value">{{ post.stats.likes | default(0) }}</span></div>
+          <div class="s5__stat"><span class="s5__stat-label">댓글</span><span class="s5__stat-value">{{ post.stats.comments | default(0) }}</span></div>
+          <div class="s5__stat"><span class="s5__stat-label">저장</span><span class="s5__stat-value">{{ post.stats.saves | default(0) }}</span></div>
+          <div class="s5__stat"><span class="s5__stat-label">총 인터랙션</span><span class="s5__stat-value">{{ post.stats.total | default(0) }}</span></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if data.insight_line %}
+    <div class="s5__insight">
+      <div class="s5__insight-text">★ {{ data.insight_line }}</div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer__text">{{ client }} | {{ report_month }}</div>
+    <div class="slide-footer__text">소셜 미디어 운영 보고서</div>
+  </div>
+</div>

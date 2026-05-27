@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>새 보고서 만들기 — NDG Report</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <nav class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-text">NDG Report</div>
+      <div class="sidebar__logo-sub">소셜 보고서 자동화</div>
+    </div>
+    <ul class="sidebar__nav">
+      <li><a href="/" class="sidebar__nav-link">대시보드</a></li>
+      <li><a href="/new" class="sidebar__nav-link active">새 보고서</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-header__title">새 보고서 만들기</h1>
+        <p class="page-header__subtitle">Excel 파일을 업로드하면 보고서가 자동으로 생성됩니다</p>
+      </div>
+      <a href="/" class="btn btn--secondary">← 대시보드로</a>
+    </div>
+
+    <div class="page-body">
+      <div style="max-width:600px;margin:0 auto">
+
+        <form id="new-report-form">
+
+          <!-- 기본 정보 -->
+          <div class="card" style="margin-bottom:var(--space-6)">
+            <h3 class="card__title" style="margin-bottom:var(--space-5)">기본 정보</h3>
+            <div class="form-group">
+              <label class="form-label required" for="report-month">보고 월</label>
+              <input type="month" id="report-month" name="report_month" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="report-title">보고서 제목</label>
+              <input type="text" id="report-title" name="title" class="form-input"
+                placeholder="예: HIZ-NDG 2026년 02월 소셜 운영 보고서" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="client-name">클라이언트명</label>
+              <input type="text" id="client-name" name="client_name" class="form-input" value="HIZ-NDG">
+            </div>
+          </div>
+
+          <!-- 팔로워 현황 (선택) -->
+          <div class="card" style="margin-bottom:var(--space-6)">
+            <h3 class="card__title" style="margin-bottom:var(--space-5)">팔로워 현황 <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);font-weight:400;">(선택)</span></h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="followers-start">월 초 팔로워 수</label>
+                <input type="number" id="followers-start" name="followers_start" class="form-input"
+                  placeholder="자동 (Sheet 2)" min="0">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="followers-end">월 말 팔로워 수</label>
+                <input type="number" id="followers-end" name="followers_end" class="form-input"
+                  placeholder="자동 (Sheet 2)" min="0">
+              </div>
+            </div>
+            <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:var(--space-3);margin-bottom:0">
+              비워두면 엑셀 Sheet 2(참고용&관리용)에서 자동으로 가져옵니다
+            </p>
+          </div>
+
+          <!-- 엑셀 업로드 -->
+          <div class="card" style="margin-bottom:var(--space-6)">
+            <h3 class="card__title" style="margin-bottom:var(--space-4)">데이터 파일</h3>
+            <div class="file-dropzone" id="excel-dropzone">
+              <div class="file-dropzone__icon">📊</div>
+              <p class="file-dropzone__text">Excel 파일을 드래그하거나 클릭하여 업로드</p>
+              <p class="file-dropzone__hint">NDG 소셜 광고 데이터 형식 (.xlsx, .xls)</p>
+              <input type="file" id="excel-file" accept=".xlsx,.xls" style="display:none">
+            </div>
+            <div id="file-preview" style="display:none;margin-top:var(--space-4)">
+              <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);
+                background:var(--color-bg-surface);border-radius:var(--radius-md)">
+                <span style="font-size:24px">📄</span>
+                <div>
+                  <div id="file-name" style="font-weight:600;font-size:var(--font-size-sm)"></div>
+                  <div id="file-row-count" style="font-size:var(--font-size-xs);color:var(--color-text-muted)"></div>
+                </div>
+                <button type="button" class="btn btn--ghost btn--sm" onclick="clearFile()" style="margin-left:auto">제거</button>
+              </div>
+            </div>
+            <!-- 시트 선택 -->
+            <div id="sheet-selector" style="display:none;margin-top:var(--space-4)">
+              <div style="padding:var(--space-4);background:var(--color-bg-surface);
+                border-radius:var(--radius-md);border:1px solid var(--color-border-default);
+                display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+                <div>
+                  <label class="form-label" style="margin-bottom:var(--space-2)">데이터 시트</label>
+                  <select id="sheet-select" name="sheet_name" class="form-input"
+                    style="width:100%;padding:var(--space-3);">
+                  </select>
+                  <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:var(--space-2);margin-bottom:0">
+                    이번 달 실적 데이터가 있는 시트</p>
+                </div>
+                <div>
+                  <label class="form-label" style="margin-bottom:var(--space-2)">KPI 추이 시트</label>
+                  <select id="kpi-sheet-select" name="kpi_sheet_name" class="form-input"
+                    style="width:100%;padding:var(--space-3);">
+                  </select>
+                  <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:var(--space-2);margin-bottom:0">
+                    월별 누적 KPI 추이가 있는 시트</p>
+                </div>
+              </div>
+            </div>
+            <div id="mapping-warning" style="display:none;margin-top:var(--space-4)">
+              <div style="padding:var(--space-4);background:#FEF3C7;border-radius:var(--radius-md);
+                border:1px solid #F59E0B;font-size:var(--font-size-sm)">
+                ⚠️ 일부 컬럼을 자동으로 인식하지 못했습니다.
+                Excel 파일의 컬럼명이 표준 형식인지 확인하세요.
+                <br><strong id="unmapped-cols"></strong>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--accent btn--lg" style="width:100%" id="create-btn">
+            보고서 생성 시작 →
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/new-report.js?v=10"></script>
+</body>
+</html>

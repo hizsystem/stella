@@ -1,0 +1,67 @@
+<style>
+.s3 { width:1920px; height:1080px; background:white; display:flex; flex-direction:column; }
+.s3__body { flex:1; padding:60px 80px; display:flex; flex-direction:column; }
+.s3__kpi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; flex:1; }
+.s3__metric-card { background:var(--bg-gray); border-radius:20px; padding:48px; border-left:8px solid var(--brand-highlight); display:flex; flex-direction:column; justify-content:space-between; }
+.s3__metric-label { font-size:20px; font-weight:700; color:var(--text-muted); letter-spacing:0.06em; }
+.s3__metric-value { font-size:72px; font-weight:900; color:var(--brand-primary); line-height:1; margin:16px 0; }
+.s3__metric-delta { font-size:32px; font-weight:700; }
+.s3__metric-delta.up   { color: var(--trend-up); }
+.s3__metric-delta.down { color: var(--trend-down); }
+.s3__summary { font-size:26px; font-weight:600; color:var(--brand-primary); margin-top:40px; }
+</style>
+
+<div class="s3">
+  <div class="slide-header">
+    <div class="slide-header__client">{{ client }}</div>
+    <div class="slide-header__section">KPI</div>
+    <div style="color:rgba(255,255,255,0.4);font-size:16px">{{ report_month }}</div>
+  </div>
+  <div class="s3__body">
+    <div style="margin-bottom:32px">
+      <div class="s3__metric-label" style="font-size:18px;margin-bottom:8px">KPI SUMMARY</div>
+      <h2 style="font-size:48px;font-weight:900;color:var(--brand-primary)">{{ data.section_title | default('KPI 성과 현황') }}</h2>
+      {% if data.table_caption %}
+      <p style="font-size:22px;color:var(--text-muted);margin-top:8px">{{ data.table_caption }}</p>
+      {% endif %}
+    </div>
+
+    <div class="s3__kpi-grid">
+      {% for metric in data.metrics | default([]) %}
+      <div class="s3__metric-card">
+        <div class="s3__metric-label">{{ metric.label }}</div>
+        <div class="s3__metric-value">{{ metric.current | format_number if format_number else metric.current }}</div>
+        {% if metric.delta_direction != 'none' and metric.delta is not none %}
+        <div class="s3__metric-delta {{ metric.delta_direction | default('up') }}">
+          {{ '▲' if metric.delta_direction == 'up' else '▼' }}
+          {{ metric.delta | format_number if format_number else metric.delta }}
+        </div>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="s3__metric-card" style="opacity:0.3">
+        <div class="s3__metric-label">팔로워</div>
+        <div class="s3__metric-value">—</div>
+      </div>
+      <div class="s3__metric-card" style="opacity:0.3">
+        <div class="s3__metric-label">총 인터랙션</div>
+        <div class="s3__metric-value">—</div>
+      </div>
+      <div class="s3__metric-card" style="opacity:0.3">
+        <div class="s3__metric-label">노출수</div>
+        <div class="s3__metric-value">—</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if data.overview %}
+    <div class="s3__summary">{{ data.overview | safe }}</div>
+    {% elif data.summary_sentence %}
+    <div class="s3__summary">{{ data.summary_sentence }}</div>
+    {% endif %}
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer__text">{{ client }} | {{ report_month }}</div>
+    <div class="slide-footer__text">소셜 미디어 운영 보고서</div>
+  </div>
+</div>

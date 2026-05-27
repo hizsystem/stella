@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보고서 편집기 — NDG Report</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/slides.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body style="overflow:hidden">
+
+<!-- 에디터 툴바 -->
+<div class="editor-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:var(--z-sticky)">
+  <div class="editor-toolbar__left">
+    <a href="/" style="color:var(--color-text-secondary);font-size:var(--font-size-sm)">← 대시보드</a>
+    <div style="width:1px;height:20px;background:var(--color-border-default)"></div>
+    <h1 id="report-title-bar" style="font-size:var(--font-size-md);font-weight:600">보고서 로딩 중...</h1>
+    <span id="report-status-badge" class="badge"></span>
+    <div class="pipeline-status-bar" id="pipeline-status-bar">
+      <div class="pipeline-status-indicator" id="pipeline-indicator"></div>
+      <span id="pipeline-status-text">대기 중</span>
+    </div>
+  </div>
+  <div class="editor-toolbar__right">
+    <label class="btn btn--ghost btn--sm" style="cursor:pointer" title="Excel 재업로드">
+      📊 Excel 재업로드
+      <input type="file" accept=".xlsx,.xls" style="display:none" id="reupload-file-input" onchange="reuploadExcelPickSheets(this)">
+    </label>
+    <button class="btn btn--secondary btn--sm" onclick="restartPipeline()" id="btn-restart">↺ 재생성</button>
+    <span id="draft-indicator" style="font-size:var(--font-size-xs);color:var(--color-text-muted);align-self:center;white-space:nowrap"></span>
+    <button class="btn btn--secondary btn--sm" onclick="saveDraft()" title="Ctrl+S">임시저장</button>
+    <button class="btn btn--accent btn--sm" onclick="downloadPptx()" id="btn-pptx">⬇ PPT 다운로드</button>
+  </div>
+</div>
+
+<!-- 에디터 레이아웃 (툴바 아래) -->
+<div class="editor-layout" style="margin-top:var(--toolbar-height)">
+
+  <!-- 좌측: 슬라이드 썸네일 네비게이터 -->
+  <div class="slide-navigator" id="slide-navigator">
+    <!-- JS로 8개 슬라이드 썸네일 동적 생성 -->
+  </div>
+
+  <!-- 중앙: 슬라이드 미리보기 + 필드 편집 -->
+  <div class="editor-main">
+    <div class="slide-editor-panel">
+      <!-- 슬라이드 미리보기 -->
+      <div class="slide-preview-pane">
+        <div class="slide-wrapper" id="slide-wrapper">
+          <div class="slide-canvas" id="slide-canvas">
+            <div style="display:flex;align-items:center;justify-content:center;height:100%;
+              color:white;font-size:24px;opacity:0.4">
+              보고서 생성 중... 잠시 후 슬라이드가 표시됩니다
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 인라인 편집 안내 (텍스트 필드 패널 제거됨) -->
+      <div style="padding:8px 12px;text-align:center;font-size:11px;color:var(--color-text-muted);
+        background:var(--color-bg-elevated);border-top:1px solid var(--color-border-default);">
+        슬라이드의 텍스트를 직접 클릭하여 편집할 수 있습니다
+      </div>
+    </div>
+  </div>
+
+  <!-- 우측: 인사이트 패널 -->
+  <div class="insights-panel" id="insights-panel">
+    <div class="insights-panel__title">
+      오퍼레이션 리뷰
+      <button class="btn btn--ghost btn--sm" onclick="regenerateInsights()" style="float:right">재생성</button>
+    </div>
+    <div id="insights-list">
+      <p style="font-size:var(--font-size-sm);color:var(--color-text-muted)">
+        보고서 생성 후 인사이트가 표시됩니다.
+      </p>
+    </div>
+
+    <!-- change_log 섹션 -->
+    <div id="change-log-section" style="display:none;margin-top:var(--space-8)">
+      <div style="font-size:var(--font-size-md);font-weight:700;margin-bottom:var(--space-4);
+        padding-bottom:var(--space-4);border-bottom:1px solid var(--color-border-default)">
+        교정 리포트
+        <span id="change-log-score" class="badge" style="margin-left:var(--space-2)"></span>
+      </div>
+      <div id="change-log-list"></div>
+      <div style="margin-top:var(--space-4)">
+        <button class="btn btn--primary" style="width:100%" onclick="acceptAllChanges()">
+          모든 교정 수락
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<!-- 재업로드 시트 선택 모달 -->
+<div class="modal-backdrop" id="reupload-sheet-modal" style="display:none">
+  <div class="modal" style="width:480px">
+    <h2 class="modal__title">시트 선택</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4)">
+      <div>
+        <label class="form-label" style="margin-bottom:var(--space-2)">데이터 시트</label>
+        <select id="ru-sheet-select" class="form-input" style="width:100%"></select>
+        <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px">이번 달 실적 데이터</p>
+      </div>
+      <div>
+        <label class="form-label" style="margin-bottom:var(--space-2)">KPI 추이 시트</label>
+        <select id="ru-kpi-sheet-select" class="form-input" style="width:100%"></select>
+        <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px">월별 누적 KPI</p>
+      </div>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeReuploadModal()">취소</button>
+      <button class="btn btn--accent" onclick="confirmReupload()">업로드 & 재생성</button>
+    </div>
+  </div>
+</div>
+<script src="/static/js/api.js?v=19"></script>
+<script src="/static/js/slides.js?v=86"></script>
+<script src="/static/js/pipeline.js?v=28"></script>
+<script src="/static/js/editor.js?v=26"></script>
+<script>
+  document.addEventListener('keydown', async e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      // 현재 편집 중인 data-field 요소를 직접 await 저장 (blur 비동기 경쟁 방지)
+      const active = document.activeElement;
+      if (active?.contentEditable === 'true' && active.dataset?.field) {
+        const fieldKey = active.dataset.field;
+        const newValue = typeof _sanitizeHtml === 'function'
+          ? _sanitizeHtml(active.innerHTML)
+          : active.innerHTML;
+        if (newValue !== (active._originalText || '')) {
+          try {
+            await apiUpdateSlide(reportId, currentSlide, fieldKey, newValue);
+            active._originalText = newValue; // blur 핸들러 중복 저장 방지
+          } catch(err) {
+            showToast('필드 저장 실패: ' + err.message, 'error');
+            return;
+          }
+        }
+        active.blur();
+      }
+      saveDraft();
+      return;
+    }
+    // Undo/Redo — contenteditable 안에서는 브라우저 기본 동작 유지
+    if (document.activeElement?.contentEditable === 'true') return;
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key === 'z') {
+      e.preventDefault();
+      performUndo();
+    }
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.shiftKey && e.key === 'z'))) {
+      e.preventDefault();
+      performRedo();
+    }
+  });
+  document.addEventListener('DOMContentLoaded', () => startAutoSave());
+</script>
+</body>
+</html>
