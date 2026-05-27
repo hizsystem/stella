@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>땡스큐레이터 — AI 활용 & 레슨런</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 56px 40px 40px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .header h1 span { color: #f97316; }
+    .header p {
+      font-size: 15px;
+      opacity: 0.75;
+      margin: 0 auto;
+    }
+
+    /* ── META BAR ── */
+    .meta-bar {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 16px 40px;
+      flex-wrap: wrap;
+    }
+    .meta-bar span {
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+    }
+    .meta-bar strong {
+      color: #fff;
+      font-size: 13px;
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
+
+    /* ── TABLE ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+    }
+    th {
+      background: #f5f5f5;
+      color: #1a1a1a;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    td {
+      padding: 12px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { color: #555; font-weight: 600; width: 30%; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: #f9f9f9;
+      border-left: 4px solid #1a1a1a;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+    .callout strong { color: #1a1a1a; }
+
+    /* ── CHANNEL CARDS ── */
+    .channel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .channel-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .channel-card .channel-tag {
+      display: inline-block;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .channel-card .channel-tag.orange { background: #f97316; }
+    .channel-card p {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    /* ── AI TOOL CARDS ── */
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .ai-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .ai-card .num {
+      width: 28px;
+      height: 28px;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .ai-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #1a1a1a;
+    }
+    .ai-card p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .ai-card a {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #1a1a1a;
+      text-decoration: none;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    /* ── EFFICIENCY TABLE ── */
+    .eff-good { color: #16a34a; font-weight: 600; }
+    .eff-bad  { color: #c0392b; font-weight: 600; }
+
+    /* ── LESSON CARDS ── */
+    .lesson-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 16px;
+      border-top: 4px solid #1a1a1a;
+    }
+    .lesson-card:nth-child(2) { border-top-color: #f97316; }
+    .lesson-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .lesson-card:nth-child(2) .lesson-num { color: #f97316; }
+    .lesson-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .lesson-quote {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-style: italic;
+      color: #333;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+    .lesson-card p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 12px;
+      color: #aaa;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    @media (max-width: 600px) {
+      .channel-grid, .ai-grid { grid-template-columns: 1fr; }
+      .meta-bar { gap: 12px; padding: 14px 16px; }
+      .meta-bar span { font-size: 12px; }
+      .header { padding: 36px 20px 28px; }
+      .header h1 { font-size: 22px; }
+      .header p { font-size: 13px; }
+      .container { padding: 32px 16px 60px; }
+      .section-title { font-size: 15px; }
+      table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      td, th { font-size: 13px; padding: 10px 12px; }
+      td:first-child { width: auto; min-width: 80px; }
+      .callout { font-size: 13px; padding: 14px 16px; }
+      .lesson-card { padding: 20px 16px; }
+      .ai-card, .channel-card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="badge">타운홀 2026 · AI 활용 사례</div>
+  <h1>땡스큐레이터 <span>📺</span></h1>
+  <p>일하고 배우고 살면서 건진 인사이트를 유튜브로 공유합니다.<br>대표님의 이름과 얼굴을 알리고, 회사와 사업이 자연스럽게 노출되는 채널을 만들고 있습니다.</p>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <span><strong>기간</strong>&nbsp; 2026 Q1 — 진행 중</span>
+  <span><strong>채널</strong>&nbsp; 땡스큐레이터 YouTube</span>
+  <span><strong>KPI</strong>&nbsp; 연말 구독자 15,000명</span>
+  <span><strong>담당</strong>&nbsp; 박신재 + 대표님</span>
+</div>
+
+<div class="container">
+
+  <!-- ① 프로젝트 개요 -->
+  <div class="section">
+    <div class="section-title">01 &nbsp;프로젝트 개요</div>
+
+    <table>
+      <tr><td>채널 미션</td><td>대표님의 이름·얼굴을 알리고, 콘텐츠를 통해 회사와 사업이 자연스럽게 노출되는 인바운드 구조 만들기</td></tr>
+      <tr><td>콘텐츠 구성</td><td>SERIES 01 권대표의 잡도리 (브랜드·창업 실무 강의) · SERIES 02 세상에 참 신기한 사람들 (인터뷰) · SERIES 03 취향에 미친 사람들 (토크)</td></tr>
+      <tr><td>운영 체계</td><td>기획·촬영 지원 / AI 기반 설명문·타임스탬프 자동 작성 / 월간 성과 분석 및 CEO 보고</td></tr>
+    </table>
+
+    <div class="callout">
+      <strong>현재 성과 · 2026.05.20 기준</strong><br/>
+      구독자 <strong>4,420명</strong> — Q2 목표(3,000명) 조기 달성 · 총 조회수 126,708회 · 좋아요 2,556건 · 댓글 568건<br/>
+      롱폼 2편(브랜딩·AI 공격)이 연속 바이럴 — 노출 합산 80.2만, 채널 조회수 급성장 견인
+    </div>
+
+    <div class="channel-grid">
+      <div class="channel-card">
+        <div class="channel-tag">롱폼 · 3편</div>
+        <p>대표님의 실무 경험 기반 강의·인터뷰. 구독자 전환의 핵심 포맷. 총 조회수 61,569회, 좋아요 1,817건 — 쇼츠 대비 좋아요율 3배</p>
+      </div>
+      <div class="channel-card">
+        <div class="channel-tag orange">쇼츠 · 26편</div>
+        <p>핵심 클립 편집본. 신규 유입과 알고리즘 노출 창구. 총 조회수 65,139회. 브랜딩·AI 주제 반응 특히 양호</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② AI 활용 -->
+  <div class="section">
+    <div class="section-title">02 &nbsp;AI 활용 현황</div>
+
+    <div class="callout">
+      <strong>사용 툴</strong>&nbsp; faster-whisper (로컬 음성 전사) &nbsp;+&nbsp; Claude AI / Claude Code (Anthropic)<br/>
+      촬영 완료 후 업로드 전까지의 작업 — 전사·설명문·타임스탬프·보고서 — 을 모두 AI 워크플로우로 처리
+    </div>
+
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="num">1</div>
+        <h4>콘텐츠 메타데이터 자동 생성</h4>
+        <p>영상 파일을 faster-whisper에 넣으면 전체 대화가 텍스트로 전사됨. 이 텍스트를 Claude에 넘기면 채널 톤에 맞는 유튜브 설명문과 챕터별 타임스탬프를 바로 생성. <strong>편당 약 2시간 30분 → 15분.</strong></p>
+      </div>
+      <div class="ai-card">
+        <div class="num">2</div>
+        <h4>성과 분석 · 보고서 자동 생성</h4>
+        <p>YouTube Studio 스크린샷을 Claude에 공유하면 수치를 직접 추출·분석하고 HTML 보고서까지 제작. CEO 보고용 운영 방안·데이터 보고서 모두 AI로 완성. <strong>반나절 → 30분.</strong></p>
+        <a href="https://sunny-paletas-70e1c8.netlify.app/" target="_blank">보고서 바로가기 →</a>
+      </div>
+    </div>
+
+    <table>
+      <tr>
+        <th>구분</th>
+        <th>내용</th>
+      </tr>
+      <tr>
+        <td>효율화 성과</td>
+        <td class="eff-good">음성 전사 90분→5분 · 설명문+타임스탬프 60분→10분 · 보고서 반나절→30분<br/>편당 약 3시간 이상 절감 / 전사 도구 추가 비용 0원 (로컬 GPU 처리)</td>
+      </tr>
+      <tr>
+        <td>현재 한계</td>
+        <td class="eff-bad">YouTube API 미연동 → 성과 수치 직접 입력 필요 / 한국어 고유명사 전사 오인식 → 수동 검토 단계 유지</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ③ 레슨런 -->
+  <div class="section">
+    <div class="section-title">03 &nbsp;레슨런</div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">Lesson 01</div>
+      <h3>AI에게 채널 정체성을 먼저 가르쳐야 쓸 수 있는 결과물이 나온다</h3>
+      <div class="lesson-quote">
+        "막연하게 '설명문 써줘'로는 어디서나 볼 수 있는 평범한 결과가 나옵니다.<br/>
+        레퍼런스 채널, 말투, 강조할 인사이트를 먼저 정의하고 지정하면 바로 쓸 수 있는 결과가 나옵니다."
+      </div>
+      <p>
+        초기에는 AI가 만든 설명문이 너무 딱딱하고 채널 톤과 달라 수정에 더 오랜 시간이 걸렸습니다.
+        '큰손 노희영', '소울정' 등 레퍼런스 채널의 말투와 우리 채널의 친근하고 솔직한 방향성을
+        구체적으로 프롬프트에 담은 뒤부터, AI 결과물을 거의 그대로 올릴 수 있게 됐습니다.
+        AI를 잘 쓰는 것은 결국 내가 원하는 것을 얼마나 명확하게 정의하는지의 문제였습니다.
+      </p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">Lesson 02</div>
+      <h3>수치보다 맥락이 인사이트를 만든다</h3>
+      <div class="lesson-quote">
+        "CTR이 낮다는 수치만 보면 '썸네일 문제'로 끝납니다.<br/>
+        어떤 영상이었는지, 알고리즘이 어떻게 반응했는지 맥락을 함께 넣으면 전혀 다른 방향이 나옵니다."
+      </div>
+      <p>
+        바이럴 영상("브랜딩 잘하면 영업 안 해도 됩니다")의 CTR은 5.2%로 세 편 중 가장 낮았지만,
+        노출수는 35.3만으로 압도적이었습니다. AI와 함께 "알고리즘이 선택한 뒤 노출이 폭발한 패턴"으로
+        분석했을 때, CTR 개선이 아닌 오프닝 30초 시청 지속률을 높이는 것이 핵심이라는 결론이 나왔습니다.
+        데이터를 AI에게 줄 때 배경과 목적을 함께 주는 것이 분석의 질을 결정합니다.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  땡스큐레이터 유튜브 운영 · AI 활용 사례 · Town Hall 2026
+</div>
+
+</body>
+</html>

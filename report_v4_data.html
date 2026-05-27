@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>땡스큐레이터 유튜브 성과 데이터</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Apple SD Gothic Neo', 'Pretendard', sans-serif;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  line-height: 1.7;
+}
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 60px 48px;
+  background: white;
+}
+
+/* Header */
+.doc-header { border-bottom: 3px solid #000; padding-bottom: 28px; margin-bottom: 56px; }
+.doc-title { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
+.doc-meta { margin-top: 10px; font-size: 13px; color: #aaa; }
+
+/* Chapter divider */
+.chapter {
+  font-size: 11px; font-weight: 800; letter-spacing: 2px;
+  color: #aaa; text-transform: uppercase;
+  margin-bottom: 32px; margin-top: 64px;
+  padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;
+}
+
+/* Section */
+.section { margin-bottom: 52px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.section-num {
+  width: 28px; height: 28px; background: #000; color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; flex-shrink: 0;
+}
+.section-title { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
+.sub-title { font-size: 13px; font-weight: 700; color: #444; margin: 22px 0 10px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0; }
+th { background: #f5f5f5; padding: 11px 14px; text-align: left; font-weight: 700; border: 1px solid #e0e0e0; font-size: 13px; white-space: nowrap; }
+td { padding: 11px 14px; border: 1px solid #e0e0e0; vertical-align: top; }
+tr:nth-child(even) td { background: #fafafa; }
+.highlight-row td { font-weight: 700; background: #fff8f0; }
+
+/* KPI cards */
+.kpi-grid { display: grid; gap: 10px; margin: 12px 0; }
+.kpi-card { border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px 12px; text-align: center; }
+.kpi-label { font-size: 11px; color: #999; margin-bottom: 6px; }
+.kpi-val { font-size: 24px; font-weight: 900; line-height: 1; }
+.kpi-sub { font-size: 11px; color: #bbb; margin-top: 5px; }
+.good { color: #22c55e; }
+.warn { color: #f59e0b; }
+
+/* Bar chart */
+.bar-wrap { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+.bar-label { font-size: 12px; color: #555; width: 80px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; background: #f0f0f0; border-radius: 4px; height: 10px; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-val { font-size: 12px; font-weight: 700; width: 52px; flex-shrink: 0; }
+
+/* Compare grid */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+.compare-card { border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; }
+.compare-card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #aaa; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; }
+.compare-card-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+.compare-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+.compare-row:last-child { border-bottom: none; }
+.compare-row-label { color: #888; }
+.compare-row-val { font-weight: 700; }
+
+/* Video rank */
+.video-rank { display: inline-block; width: 22px; height: 22px; background: #000; color: white; border-radius: 50%; text-align: center; line-height: 22px; font-size: 11px; font-weight: 800; }
+.video-rank.gold { background: #f59e0b; }
+.video-rank.silver { background: #94a3b8; }
+.video-rank.bronze { background: #cd7c4e; }
+
+/* Viral highlight */
+.viral-card {
+  background: linear-gradient(135deg, #fff7ed 0%, #fffbf7 100%);
+  border: 2px solid #f97316; border-radius: 12px; padding: 20px 24px; margin: 12px 0;
+}
+.viral-label { font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 1px; margin-bottom: 8px; }
+.viral-title { font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 12px; line-height: 1.5; }
+.viral-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.viral-stat { text-align: center; }
+.viral-stat-val { font-size: 22px; font-weight: 900; color: #f97316; line-height: 1; }
+.viral-stat-label { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* Note */
+.note-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #78350f; margin: 10px 0; }
+
+/* Nav */
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #f5f5f5; border: 1px solid #e0e0e0;
+  border-radius: 8px; padding: 8px 14px;
+  font-size: 13px; font-weight: 700; color: #444;
+  text-decoration: none; margin-bottom: 32px;
+}
+
+/* Footer */
+.footer { margin-top: 60px; padding-top: 20px; border-top: 2px solid #000; font-size: 12px; color: #bbb; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+    <a href="report_v4.html" class="nav-btn">← 운영 방안 보고서로 돌아가기</a>
+    <span style="font-size:11px; color:#fff; background:#3b82f6; border-radius:20px; padding:3px 10px; font-weight:700; letter-spacing:0.5px;">2026.05.27</span>
+  </div>
+
+  <div class="doc-header">
+    <div class="doc-title">땡스큐레이터 유튜브 성과 데이터</div>
+    <div class="doc-meta">기준일 2026.05.27 &nbsp;·&nbsp; 총 29개 영상 기준 (롱폼 3 · 쇼츠 26)</div>
+  </div>
+
+  <!-- ─── PART 1. 채널 현황 ─── -->
+  <div class="chapter">Part 1 &nbsp;·&nbsp; 채널 현황</div>
+
+  <!-- 1. 핵심 수치 요약 -->
+  <div class="section" id="sec1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">핵심 수치 요약</div>
+    </div>
+
+    <!-- 구독자 메인 KPI -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+      <div style="background:linear-gradient(135deg,#fff7ed 0%,#fff 100%); border:2px solid #f97316; border-radius:12px; padding:20px 24px;">
+        <div style="font-size:12px; font-weight:700; color:#f97316; margin-bottom:4px;">현재 구독자 (핵심 KPI)</div>
+        <div style="font-size:36px; font-weight:900; line-height:1; color:#1a1a1a;">4,420명</div>
+        <div style="font-size:13px; color:#888; margin-top:6px;">2026.05.27 기준 &nbsp;·&nbsp; <span style="color:#22c55e; font-weight:700;">+3,474명↑</span> (4월 초 946명 대비)</div>
+      </div>
+      <div style="border:1px solid #e0e0e0; border-radius:12px; padding:20px 24px;">
+        <div style="font-size:12px; font-weight:700; color:#aaa; margin-bottom:4px;">연말 목표 달성률</div>
+        <div style="font-size:36px; font-weight:900; line-height:1; color:#1a1a1a;">15,000명</div>
+        <div style="margin-top:12px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:8px;">
+              <div style="width:29.5%; background:#f97316; height:100%; border-radius:4px;"></div>
+            </div>
+            <div style="font-size:12px; font-weight:700; color:#f97316; width:40px;">29.5%</div>
+          </div>
+          <div style="font-size:11px; color:#bbb;">목표 달성률 · 월 +2,000명 이상 필요</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 누적 채널 성과 5개 카드 -->
+    <div class="sub-title">누적 채널 성과 <span style="font-size:11px; color:#aaa; font-weight:400;">2026.05.27 기준</span></div>
+    <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="kpi-card">
+        <div class="kpi-label">총 조회수</div>
+        <div class="kpi-val" style="font-size:20px;">126,708</div>
+        <div class="kpi-sub">롱폼 61,569 · 쇼츠 65,139</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">총 좋아요</div>
+        <div class="kpi-val good" style="font-size:20px;">2,556건</div>
+        <div class="kpi-sub">롱폼 1,817 · 쇼츠 739</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">총 댓글</div>
+        <div class="kpi-val" style="font-size:20px;">568건</div>
+        <div class="kpi-sub">롱폼 274 · 쇼츠 294</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">롱폼 CTR (최고)</div>
+        <div class="kpi-val good" style="font-size:20px;">7.3%</div>
+        <div class="kpi-sub">목표 8% · AI 공격 영상</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 구독자 성장 추이 -->
+  <div class="section" id="sec2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">구독자 성장 추이</div>
+    </div>
+
+    <table>
+      <tr>
+        <th>기간</th>
+        <th>구독자 수</th>
+        <th>증감</th>
+        <th>메모</th>
+      </tr>
+      <tr>
+        <td>2026.04 초</td>
+        <td><strong>946명</strong></td>
+        <td>—</td>
+        <td>측정 시작점</td>
+      </tr>
+      <tr>
+        <td>2026.05.11</td>
+        <td><strong>1,159명</strong></td>
+        <td><span class="good" style="font-weight:700;">+213명↑</span></td>
+        <td>약 40일간 자연 성장</td>
+      </tr>
+      <tr>
+        <td>2026.05.20</td>
+        <td><strong>3,127명</strong></td>
+        <td><span class="warn" style="font-weight:700;">+1,968명↑</span></td>
+        <td>9일 만에 급증 — 브랜딩 롱폼 바이럴</td>
+      </tr>
+      <tr class="highlight-row">
+        <td>2026.05.27</td>
+        <td><strong>4,420명</strong></td>
+        <td><span class="good" style="font-weight:700;">+1,293명↑</span></td>
+        <td>1주일 만에 추가 성장 — AI 공격 롱폼 확산</td>
+      </tr>
+      <tr style="background:#f9f9f9;">
+        <td>2026.06 목표</td>
+        <td><strong>3,000명</strong></td>
+        <td style="color:#22c55e; font-weight:700;">✓ 달성 (조기)</td>
+        <td>Q2 목표 5월 중 조기 달성</td>
+      </tr>
+    </table>
+
+    <!-- 바이럴 원인 분석 -->
+    <div class="sub-title" style="margin-top:24px;">급증 원인 분석 — 5/14 롱폼 바이럴</div>
+    <div class="viral-card">
+      <div style="display:flex; gap:20px; align-items:flex-start;">
+        <img src="땡큐%203편%20브랜딩%20썸네일3-1.png" style="width:200px; flex-shrink:0; border-radius:8px; object-fit:cover; aspect-ratio:16/9;">
+        <div style="flex:1;">
+      <div class="viral-label">VIRAL LONG-FORM · 2026.05.14 업로드 · 8:59</div>
+      <div class="viral-title">🔑 브랜딩 잘하면 영업 안 해도 됩니다 | MD가 먼저 연락 오는 브랜드, 뭐가 다를까요</div>
+      <div class="viral-stats">
+        <div class="viral-stat">
+          <div class="viral-stat-val">52.4만</div>
+          <div class="viral-stat-label">노출수</div>
+        </div>
+        <div class="viral-stat">
+          <div class="viral-stat-val">5.1%</div>
+          <div class="viral-stat-label">CTR</div>
+        </div>
+        <div class="viral-stat">
+          <div class="viral-stat-val">33,489</div>
+          <div class="viral-stat-label">조회수</div>
+        </div>
+        <div class="viral-stat">
+          <div class="viral-stat-val">2.8만</div>
+          <div class="viral-stat-label">순 시청자</div>
+        </div>
+        <div class="viral-stat">
+          <div class="viral-stat-val">2:56</div>
+          <div class="viral-stat-label">평균 시청 (32.7%)</div>
+        </div>
+        <div class="viral-stat">
+          <div class="viral-stat-val">1,114</div>
+          <div class="viral-stat-label">좋아요</div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+    <div class="note-box">
+      노출 52.4만 → 순 시청자 28,000명. 이 영상 1개가 채널 전체 조회수의 <strong>26.4%</strong>를 차지. 업로드 이후 지속 성장 중 — 구독자 급증의 핵심 동인. <strong>Q2 목표(3,000명) 조기 달성.</strong>
+    </div>
+  </div>
+
+  <!-- ─── PART 2. 콘텐츠 유형별 성과 ─── -->
+  <div class="chapter">Part 2 &nbsp;·&nbsp; 콘텐츠 유형별 성과</div>
+
+  <!-- 3. 롱폼 vs 쇼츠 비교 -->
+  <div class="section" id="sec3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">롱폼 vs 쇼츠 비교</div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card" style="border-color:#3b82f6;">
+        <div class="compare-card-label" style="color:#3b82f6;">롱폼 LONG-FORM · 3개</div>
+        <div class="compare-card-title">구독·신뢰 전환</div>
+        <div class="compare-row">
+          <span class="compare-row-label">조회수</span>
+          <span class="compare-row-val">61,569</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">좋아요</span>
+          <span class="compare-row-val good">1,817건</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">댓글</span>
+          <span class="compare-row-val">274건</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">좋아요/조회수</span>
+          <span class="compare-row-val good">3.0%</span>
+        </div>
+      </div>
+      <div class="compare-card" style="border-color:#ef4444;">
+        <div class="compare-card-label" style="color:#ef4444;">쇼츠 SHORTS · 26개</div>
+        <div class="compare-card-title">신규 유입</div>
+        <div class="compare-row">
+          <span class="compare-row-label">조회수</span>
+          <span class="compare-row-val">65,139</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">좋아요</span>
+          <span class="compare-row-val good">739건</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">댓글</span>
+          <span class="compare-row-val">294건</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">좋아요/조회수</span>
+          <span class="compare-row-val">1.1%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-title">조회수 분포</div>
+    <div style="padding:16px; background:#f9f9f9; border-radius:10px; margin:10px 0;">
+      <div class="bar-wrap">
+        <div class="bar-label">쇼츠</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:51.4%; background:#ef4444;"></div>
+        </div>
+        <div class="bar-val" style="color:#ef4444;">51.4%</div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label">롱폼</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:48.6%; background:#3b82f6;"></div>
+        </div>
+        <div class="bar-val" style="color:#3b82f6;">48.6%</div>
+      </div>
+      <div style="font-size:11px; color:#bbb; margin-top:10px;">전체 126,708회 기준</div>
+    </div>
+
+    <div class="sub-title">좋아요 분포</div>
+    <div style="padding:16px; background:#f9f9f9; border-radius:10px; margin:10px 0;">
+      <div class="bar-wrap">
+        <div class="bar-label">롱폼</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:71.1%; background:#3b82f6;"></div>
+        </div>
+        <div class="bar-val" style="color:#3b82f6;">71.1%</div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label">쇼츠</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:28.9%; background:#ef4444;"></div>
+        </div>
+        <div class="bar-val" style="color:#ef4444;">28.9%</div>
+      </div>
+      <div style="font-size:11px; color:#bbb; margin-top:10px;">전체 2,556건 기준</div>
+    </div>
+
+    <div class="note-box">
+      롱폼이 조회수의 48.6%이지만 좋아요의 71.1%를 차지 → <strong>구독 전환율이 훨씬 높음.</strong> 바이럴 롱폼 2편(브랜딩·AI 공격)이 채널 전체 좋아요의 67.1%를 생성.
+    </div>
+  </div>
+
+  <!-- ─── PART 3. 영상 성과 ─── -->
+  <div class="chapter">Part 3 &nbsp;·&nbsp; 영상별 성과</div>
+
+  <!-- 4. 롱폼 영상별 성과 -->
+  <div class="section" id="sec4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">롱폼 영상별 성과</div>
+    </div>
+
+    <table>
+      <tr>
+        <th style="width:32px;">순위</th>
+        <th>영상 제목</th>
+        <th style="text-align:center;">길이</th>
+        <th style="text-align:right;">노출수</th>
+        <th style="text-align:right;">CTR</th>
+        <th style="text-align:right;">조회수</th>
+        <th style="text-align:right;">순 시청자</th>
+        <th style="text-align:right;">평균 시청</th>
+        <th style="text-align:right;">시청 지속률</th>
+        <th style="text-align:right;">좋아요</th>
+        <th style="text-align:right;">댓글</th>
+      </tr>
+      <tr style="background:#fffbf5;">
+        <td><span class="video-rank gold">1</span></td>
+        <td style="font-size:13px; font-weight:700; min-width:200px;">🔑 브랜딩 잘하면 영업 안 해도 됩니다<br><span style="font-weight:400; color:#888; font-size:11px;">MD가 먼저 연락 오는 브랜드, 뭐가 다를까요</span></td>
+        <td style="text-align:center; font-size:12px; color:#888;">8:59</td>
+        <td style="text-align:right; font-weight:700; color:#f97316;">52.4만</td>
+        <td style="text-align:right;">5.1%</td>
+        <td style="text-align:right; font-weight:800; color:#f97316;">33,489</td>
+        <td style="text-align:right; font-weight:700;">2.8만</td>
+        <td style="text-align:right; font-weight:700;">2:56</td>
+        <td style="text-align:right; color:#22c55e; font-weight:700;">32.7%</td>
+        <td style="text-align:right; font-weight:700; color:#22c55e;">1,114</td>
+        <td style="text-align:right;">160</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank silver">2</span></td>
+        <td style="font-size:13px;">AI 공격 제대로 맞은 대행사 사장의 팩트 폭로🔥<br><span style="color:#888; font-size:11px;">수익률 50% 올린 클로드 AI 대시보드 직접 공개 (AI 시대 생존법👀)</span></td>
+        <td style="text-align:center; font-size:12px; color:#888;">9:04</td>
+        <td style="text-align:right; color:#f97316; font-weight:700;">27.8만</td>
+        <td style="text-align:right; color:#22c55e; font-weight:700;">7.3%</td>
+        <td style="text-align:right; font-weight:700;">25,883</td>
+        <td style="text-align:right;">2.0만</td>
+        <td style="text-align:right;">2:46</td>
+        <td style="text-align:right; color:#22c55e; font-weight:700;">30.5%</td>
+        <td style="text-align:right;">589</td>
+        <td style="text-align:right;">78</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank bronze">3</span></td>
+        <td style="font-size:13px;">정부지원사업, 안하면 손해🚨<br><span style="color:#888; font-size:11px;">지원사업으로 미국까지 간 스몰브랜드 대표의 팩트 기반 노하우 공유 (헌터아님)</span></td>
+        <td style="text-align:center; font-size:12px; color:#888;">10:24</td>
+        <td style="text-align:right; color:#888;">2.6만</td>
+        <td style="text-align:right;">5.5%</td>
+        <td style="text-align:right; font-weight:700;">2,197</td>
+        <td style="text-align:right;">1.7천</td>
+        <td style="text-align:right;">3:42</td>
+        <td style="text-align:right; color:#22c55e; font-weight:700;">35.6%</td>
+        <td style="text-align:right;">114</td>
+        <td style="text-align:right;">36</td>
+      </tr>
+      <tr class="highlight-row">
+        <td colspan="5" style="font-weight:800;">합계</td>
+        <td style="text-align:right; font-weight:800;">61,569</td>
+        <td style="text-align:right; font-weight:800;">—</td>
+        <td style="text-align:right; font-weight:800;">—</td>
+        <td style="text-align:right; font-weight:800; color:#22c55e;">30~36%</td>
+        <td style="text-align:right; font-weight:800; color:#22c55e;">1,817</td>
+        <td style="text-align:right; font-weight:800;">274</td>
+      </tr>
+    </table>
+    <div class="note-box" style="margin-top:10px;">
+      롱폼 3편 시청 지속률 <strong>30~36%</strong> — 유튜브 평균(30~35%) 대비 양호. CTR은 AI 공격 영상이 7.3%로 가장 높음. 브랜딩 영상은 CTR이 낮아도 압도적 노출(52.4만)과 조회수로 성과를 만든 케이스.
+    </div>
+  </div>
+
+  <!-- 5. 쇼츠 영상별 성과 -->
+  <div class="section" id="sec5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">쇼츠 영상별 성과 (조회수 상위)</div>
+    </div>
+
+    <table>
+      <tr>
+        <th style="width:32px;">순위</th>
+        <th>영상 제목</th>
+        <th>업로드</th>
+        <th style="text-align:right;">조회수</th>
+        <th style="text-align:right;">좋아요</th>
+        <th style="text-align:right;">댓글</th>
+      </tr>
+      <tr>
+        <td><span class="video-rank gold">1</span></td>
+        <td style="font-size:13px; font-weight:700;">브랜드 업체가 절대 먼저 말 안해주는 것</td>
+        <td style="font-size:12px; color:#888; white-space:nowrap;">5/21</td>
+        <td style="text-align:right; font-weight:800; color:#f97316;">7,279</td>
+        <td style="text-align:right; font-weight:700; color:#22c55e;">105</td>
+        <td style="text-align:right;">10</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank silver">2</span></td>
+        <td style="font-size:13px; font-weight:700;">브랜딩이 도대체 뭐길래</td>
+        <td style="font-size:12px; color:#888; white-space:nowrap;">5/16</td>
+        <td style="text-align:right; font-weight:800; color:#f97316;">7,138</td>
+        <td style="text-align:right; font-weight:700;">93</td>
+        <td style="text-align:right;">24</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank bronze">3</span></td>
+        <td style="font-size:13px;">직원 줄일까요, AI 쓸까요? 현실적인 답 드립니다!</td>
+        <td style="font-size:12px; color:#888; white-space:nowrap;">5/2</td>
+        <td style="text-align:right; font-weight:700;">6,309</td>
+        <td style="text-align:right;">23</td>
+        <td style="text-align:right;">19</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank" style="background:#888;">4</span></td>
+        <td style="font-size:13px;">실제로 쓰는 AI 대시보드 전부 공개</td>
+        <td style="font-size:12px; color:#888; white-space:nowrap;">5/6</td>
+        <td style="text-align:right; font-weight:700;">4,675</td>
+        <td style="text-align:right; color:#22c55e; font-weight:700;">77</td>
+        <td style="text-align:right;">14</td>
+      </tr>
+      <tr>
+        <td><span class="video-rank" style="background:#888;">5</span></td>
+        <td style="font-size:13px;">AI 도입했더니 딤 구조가 바뀐다고?</td>
+        <td style="font-size:12px; color:#888; white-space:nowrap;">5/5</td>
+        <td style="text-align:right; font-weight:700;">3,192</td>
+        <td style="text-align:right;">27</td>
+        <td style="text-align:right;">13</td>
+      </tr>
+      <tr class="highlight-row">
+        <td colspan="3" style="font-weight:800;">쇼츠 26개 합계</td>
+        <td style="text-align:right; font-weight:800;">65,139</td>
+        <td style="text-align:right; font-weight:800; color:#22c55e;">739</td>
+        <td style="text-align:right; font-weight:800;">294</td>
+      </tr>
+    </table>
+
+    <div class="note-box" style="margin-top:12px;">
+      쇼츠 상위 2개("브랜드 업체가 절대 먼저 말 안해주는 것", "브랜딩이 도대체 뭐길래") 합산 14,417 조회수 = 쇼츠 전체의 22.1%. 브랜딩 관련 쇼츠가 AI 관련 쇼츠보다 좋아요율이 더 높음.
+    </div>
+  </div>
+
+  <!-- ─── PART 4. 지속 팔로업 ─── -->
+  <div class="chapter">Part 4 &nbsp;·&nbsp; 지속 팔로업</div>
+
+  <!-- 6. 월간 KPI 추적 테이블 -->
+  <div class="section" id="sec6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">월간 KPI 추적</div>
+    </div>
+
+    <table>
+      <tr>
+        <th>지표</th>
+        <th>측정 주기</th>
+        <th>5/20</th>
+        <th>5/27 현재</th>
+        <th>6월</th>
+        <th>목표치</th>
+      </tr>
+      <tr class="highlight-row">
+        <td><strong>구독자</strong></td>
+        <td>월간</td>
+        <td>3,127명</td>
+        <td><strong>4,420명</strong></td>
+        <td style="color:#aaa;">—</td>
+        <td>+2,000명/월</td>
+      </tr>
+      <tr>
+        <td>총 조회수</td>
+        <td>월간</td>
+        <td>82,027</td>
+        <td>126,708 (누적)</td>
+        <td style="color:#aaa;">—</td>
+        <td>매월 누적 증가</td>
+      </tr>
+      <tr>
+        <td>총 좋아요</td>
+        <td>월간</td>
+        <td>1,679건</td>
+        <td>2,556건 (누적)</td>
+        <td style="color:#aaa;">—</td>
+        <td>매월 누적 증가</td>
+      </tr>
+      <tr>
+        <td>총 댓글</td>
+        <td>월간</td>
+        <td>485건</td>
+        <td>568건 (누적)</td>
+        <td style="color:#aaa;">—</td>
+        <td>매월 누적 증가</td>
+      </tr>
+      <tr>
+        <td>롱폼 CTR (최고)</td>
+        <td>편당</td>
+        <td>7.2%</td>
+        <td>7.3% <span style="font-size:11px; color:#22c55e;">(AI 공격)</span></td>
+        <td style="color:#aaa;">—</td>
+        <td>8% 이상</td>
+      </tr>
+      <tr>
+        <td>시청 지속률</td>
+        <td>편당</td>
+        <td style="color:#aaa;">—</td>
+        <td>30~36% (롱폼)</td>
+        <td style="color:#aaa;">—</td>
+        <td>매달 상승</td>
+      </tr>
+    </table>
+
+    <div class="sub-title" style="margin-top:28px;">측정 방법 안내</div>
+    <table>
+      <tr><th>지표</th><th>유튜브 스튜디오 경로</th></tr>
+      <tr><td>구독자</td><td>채널 대시보드 → 구독자 현황</td></tr>
+      <tr><td>총 조회수 / 좋아요 / 댓글</td><td>분석 → 개요 탭 (기간: 전체 기간 설정)</td></tr>
+      <tr><td>CTR</td><td>분석 → 도달 탭 → 노출 클릭률</td></tr>
+      <tr><td>시청 지속률</td><td>분석 → 참여도 탭 → 평균 시청 지속 시간 / 시청 지속률</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <span>땡스큐레이터 유튜브 성과 데이터 · v4 · 2026.05.27</span>
+    <span>Powered by Claude</span>
+  </div>
+
+</div>
+</body>
+</html>
